@@ -15,5 +15,9 @@
     "mode": "dark",
     "light": "One Light",
     "dark": "Ayu Dark"
+  },
+  "ui_font_family": "JetBrainsMono Nerd Font Mono",
+  "ui_font_features": {
+    "liga": true
   }
 }
