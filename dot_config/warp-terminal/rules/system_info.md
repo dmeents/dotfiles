@@ -1,4 +1,5 @@
 # System Information
+<!-- You should change the system information below with your own -->
 
 ## System Configuration
 - **CPU**: AMD Ryzen 7 9550x3D (16) @ 4.3GHz, 5.7GHz boos
@@ -18,11 +19,13 @@
 - We are running our RAM at the base clock, because when trying to run the XMP profile, the system becomes unstable and crashes.
 
 ## Configuration Management
+<!-- Handles instructions for managing configuration files -->
 
 ### Chezmoi Workflow
 When making changes to configuration files in `~/.config/`, ALWAYS follow this workflow:
 
 1. **Edit files in chezmoi source directory** (not directly in `~/.config/`)
+   - The chezmoi source directory is located at `~/.local/share/chezmoi`
    - Use `chezmoi source-path <file>` to find the chezmoi source location
    - If the file is not managed by chezmoi, notify the user to add it first with `chezmoi add <file>`
    - Then make changes to the chezmoi source file

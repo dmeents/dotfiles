@@ -31,6 +31,13 @@ source $ZSH/oh-my-zsh.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+# Default editors
+
+export EDITOR=nano
+export VISUAL=zeditor
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 # Ignore commands that start with spaces and duplicates.
 
 export HISTCONTROL=ignoreboth
