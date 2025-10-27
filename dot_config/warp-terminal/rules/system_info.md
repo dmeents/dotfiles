@@ -1,5 +1,5 @@
 # System Information
-<!-- You should change the system information below with your own -->
+<!-- You should change the system information below to match your own -->
 
 ## System Configuration
 - **CPU**: AMD Ryzen 7 9550x3D (16) @ 4.3GHz, 5.7GHz boos
@@ -19,7 +19,7 @@
 - We are running our RAM at the base clock, because when trying to run the XMP profile, the system becomes unstable and crashes.
 
 ## Configuration Management
-<!-- Handles instructions for managing configuration files -->
+<!-- Handles instructions for managing configuration files with chezmoi -->
 
 ### Chezmoi Workflow
 When making changes to configuration files in `~/.config/`, ALWAYS follow this workflow:
