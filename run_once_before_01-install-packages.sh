@@ -67,7 +67,6 @@ media_packages=(
 dev_tools=(
     git                    # Version control
     github-cli             # GitHub CLI
-    gitkraken              # Git GUI
     rustup                 # Rust toolchain
     vi                     # Basic editor
     nano                   # Simple editor
@@ -159,19 +158,24 @@ kernel=(
     limine-mkinitcpio-hook # Hook (depends on limine)
 )
 
-# Applications
+# Applications (official repos)
 applications=(
-    beeper-v4-bin         # Chat client
     firefox               # Web browser
-    zen-browser-bin       # Privacy browser
-    logseq-desktop        # Note taking
     proton-mail-bin       # Email client
-    vicinae-bin           # Tool
     warp-terminal         # Terminal
-    exiled-exchange-2-bin # Game tool
     solaar                # Logitech manager
     btop                  # Process viewer
     octopi                # Package manager GUI
+)
+
+# AUR Applications (install separately with paru/yay)
+aur_applications=(
+    beeper-v4-bin         # Chat client
+    zen-browser-bin       # Privacy browser
+    logseq-desktop        # Note taking
+    vicinae-bin           # Tool
+    exiled-exchange-2-bin # Game tool
+    gitkraken             # Git GUI
 )
 
 # Python packages
@@ -192,7 +196,7 @@ misc=(
     amd-ucode           # AMD microcode
 )
 
-# Combine all packages
+# Combine all official repo packages
 all_packages=(
     "${system_utils[@]}"
     "${hyprland_packages[@]}"
@@ -212,9 +216,23 @@ all_packages=(
     "${misc[@]}"
 )
 
-# Install packages
-echo "==> Installing ${#all_packages[@]} packages..."
+# Install official repo packages
+echo "==> Installing ${#all_packages[@]} official packages..."
 sudo pacman -S --needed --noconfirm "${all_packages[@]}"
 
-echo "==> Package installation complete!"
-echo "==> Note: AUR packages (if any) need to be installed separately with paru/yay"
+echo "==> Official packages installation complete!"
+
+# Install AUR packages if paru is available
+if command -v paru &> /dev/null; then
+    if [ ${#aur_applications[@]} -gt 0 ]; then
+        echo "==> Installing ${#aur_applications[@]} AUR packages..."
+        paru -S --needed --noconfirm "${aur_applications[@]}"
+        echo "==> AUR packages installation complete!"
+    fi
+else
+    echo "==> Skipping AUR packages (paru not installed)"
+    echo "==> To install AUR packages manually, run:"
+    echo "    paru -S ${aur_applications[*]}"
+fi
+
+echo "==> All package installation complete!"

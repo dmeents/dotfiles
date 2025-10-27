@@ -39,7 +39,7 @@ When the user installs a new package they want to track across machines:
 
 1. **Check if package is already in the install script:**
    ```bash
-   grep -i '<package-name>' ~/.local/share/chezmoi/run_once_before_install-packages.sh
+   grep -i '<package-name>' ~/.local/share/chezmoi/run_once_before_01-install-packages.sh
    ```
 
 2. **If not present, determine if it should be added:**
@@ -49,16 +49,17 @@ When the user installs a new package they want to track across machines:
 
 3. **Find recently installed packages not in the script:**
    ```bash
-   comm -23 <(pacman -Qe | awk '{print $1}' | sort) <(grep -oP '(?<=\s{4})\S+(?=\s+#)' ~/.local/share/chezmoi/run_once_before_install-packages.sh | sort) | head -20
+   comm -23 <(pacman -Qe | awk '{print $1}' | sort) <(grep -oP '(?<=\s{4})\S+(?=\s+#)' ~/.local/share/chezmoi/run_once_before_01-install-packages.sh | sort) | head -20
    ```
 
-4. **Add to the appropriate category** in `run_once_before_install-packages.sh`
+4. **Add to the appropriate category** in `run_once_before_01-install-packages.sh`
    - Don't add if it's a dependency of an existing package
    - Use comments to explain what pulls dependencies
+   - Add AUR packages to the `aur_applications` array
 
 5. **Commit the changes:**
    ```bash
-   chezmoi git -- add run_once_before_install-packages.sh
+   chezmoi git -- add run_once_before_01-install-packages.sh
    chezmoi git -- commit -m "Add <package-name> to install script"
    chezmoi git -- push
    ```

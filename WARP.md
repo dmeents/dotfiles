@@ -125,10 +125,16 @@ From `dot_config/warp-terminal/rules/system_info.md`:
 
 This repository includes automated installation scripts that run during `chezmoi init` or `chezmoi apply`:
 
-**`run_once_before_install-packages.sh`**
+**`run_once_before_00-system-update.sh`**
+- Updates all system packages with `pacman -Syu`
+- Installs paru (AUR helper) if not already present
+- Runs first, before any package installation
+
+**`run_once_before_01-install-packages.sh`**
 - Installs all manually added packages identified after base OS installation
 - Organized into logical categories (Hyprland, development tools, fonts, etc.)
 - Runs once per machine before applying dotfiles
+- Separates official repo packages (pacman) from AUR packages (paru)
 - Uses `--needed` flag to avoid reinstalling existing packages
 - Only includes top-level packages; dependencies are pulled automatically
 
@@ -142,7 +148,7 @@ When the user installs a new package they want to persist across machines:
 
 **Quick command to find recently installed explicit packages:**
 ```bash
-comm -23 <(pacman -Qe | awk '{print $1}' | sort) <(grep -oP '(?<=\s{4})\S+(?=\s+#)' run_once_before_install-packages.sh | sort) | head -20
+comm -23 <(pacman -Qe | awk '{print $1}' | sort) <(grep -oP '(?<=\s{4})\S+(?=\s+#)' run_once_before_01-install-packages.sh | sort) | head -20
 ```
 
 **Note:** AUR packages with `-bin` or `-git` suffixes need manual intervention if not available in the repo.
