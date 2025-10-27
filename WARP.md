@@ -121,6 +121,32 @@ From `dot_config/warp-terminal/rules/system_info.md`:
 - Gaming-optimized environment variables in Hyprland config
 - MESA anti-lag disabled due to stuttering issues
 
+## Installation Scripts
+
+This repository includes automated installation scripts that run during `chezmoi init` or `chezmoi apply`:
+
+**`run_once_before_install-packages.sh`**
+- Installs all manually added packages identified after base OS installation
+- Organized into logical categories (Hyprland, development tools, fonts, etc.)
+- Runs once per machine before applying dotfiles
+- Uses `--needed` flag to avoid reinstalling existing packages
+- Only includes top-level packages; dependencies are pulled automatically
+
+**Maintaining the Package List:**
+
+When the user installs a new package they want to persist across machines:
+1. Identify if it's a dependency of another package: `pacman -Qi <package> | grep "Install Reason"`
+2. If explicitly installed, add it to the appropriate section in `run_once_before_install-packages.sh`
+3. Check if any existing packages would pull it as a dependency
+4. Commit the updated script to chezmoi
+
+**Quick command to find recently installed explicit packages:**
+```bash
+comm -23 <(pacman -Qe | awk '{print $1}' | sort) <(grep -oP '(?<=\s{4})\S+(?=\s+#)' run_once_before_install-packages.sh | sort) | head -20
+```
+
+**Note:** AUR packages with `-bin` or `-git` suffixes need manual intervention if not available in the repo.
+
 ## Common Tasks
 
 ### Making Configuration Changes

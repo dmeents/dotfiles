@@ -33,3 +33,32 @@ When making changes to configuration files in `~/.config/`, ALWAYS follow this w
 2. **Apply changes** after editing
    - Run `chezmoi apply` to sync changes to the live config
    - This ensures changes are tracked and can be deployed to other systems
+
+### Package Management Workflow
+When the user installs a new package they want to track across machines:
+
+1. **Check if package is already in the install script:**
+   ```bash
+   grep -i '<package-name>' ~/.local/share/chezmoi/run_once_before_install-packages.sh
+   ```
+
+2. **If not present, determine if it should be added:**
+   - Check if explicitly installed: `pacman -Qi <package> | grep "Install Reason"`
+   - If it shows "Installed as a dependency", it's auto-installed by another package
+   - Check what depends on it: `pacman -Qi <package> | grep "Required By"`
+
+3. **Find recently installed packages not in the script:**
+   ```bash
+   comm -23 <(pacman -Qe | awk '{print $1}' | sort) <(grep -oP '(?<=\s{4})\S+(?=\s+#)' ~/.local/share/chezmoi/run_once_before_install-packages.sh | sort) | head -20
+   ```
+
+4. **Add to the appropriate category** in `run_once_before_install-packages.sh`
+   - Don't add if it's a dependency of an existing package
+   - Use comments to explain what pulls dependencies
+
+5. **Commit the changes:**
+   ```bash
+   chezmoi git -- add run_once_before_install-packages.sh
+   chezmoi git -- commit -m "Add <package-name> to install script"
+   chezmoi git -- push
+   ```
