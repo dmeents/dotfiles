@@ -72,7 +72,8 @@ def signal_handler(sig, frame):
     logger.debug('Received signal to stop, exiting')
     sys.stdout.write('\n')
     sys.stdout.flush()
-    # loop.quit()
+    if 'loop' in globals():
+        loop.quit()
     sys.exit(0)
 
 
@@ -89,6 +90,7 @@ def parse_arguments():
 
 
 def main():
+    global loop
     arguments = parse_arguments()
 
     # Initialize logging
