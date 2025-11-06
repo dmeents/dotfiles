@@ -40,6 +40,8 @@ hyprland_packages=(
 # Wayland utilities
 # Note: cachyos-hyprland-settings already pulls in: grimblast-git, slurp, swaybg, swaylock-effects-git, swaylock-fancy-git, wl-clipboard, bemenu, bemenu-wayland
 wayland_utils=(
+    hyprshot               # Hyprland screenshot utility
+    hyprpicker             # Color picker (optional dep for hyprshot)
     swappy                 # Screenshot editor
 )
 

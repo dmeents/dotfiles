@@ -7,17 +7,91 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "show_edit_predictions": true,
   "base_keymap": "JetBrains",
-  "icon_theme": "Zed (Default)",
   "ui_font_size": 16,
-  "buffer_font_size": 15,
+  "buffer_font_size": 15.0,
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Ayu Dark"
+    "dark": "Min Dark (Solid)"
+  },
+  "tabs": {
+    "file_icons": true,
+    "git_status": true
   },
   "ui_font_family": "JetBrainsMono Nerd Font Mono",
   "ui_font_features": {
     "liga": true
+  },
+  "edit_predictions": {
+    "mode": "eager",
+    "disabled_globs": [".env"]
+  },
+  "inlay_hints": {
+    "enabled": true
+  },
+  "diagnostics": {
+    "inline": {
+      "enabled": true,
+      "update_debounce_ms": 150,
+      "padding": 4,
+      "min_column": 0,
+      "max_severity": null
+    }
+  },
+  "soft_wrap": "none",
+  "tab_size": 2,
+  "lsp": {
+    "biome": {
+      "settings": {
+        "require_config_file": true
+      }
+    },
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "preferences": {
+            "importModuleSpecifier": "project-relative"
+          }
+        }
+      }
+    }
+  },
+  "languages": {
+    "JSON": {
+      "formatter": { "language_server": { "name": "biome" } },
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true
+      }
+    },
+    "Markdown": {
+      "formatter": "prettier"
+    },
+    "Plain Text": {
+      "show_edit_predictions": false
+    },
+    "JavaScript": {
+      "formatter": { "language_server": { "name": "biome" } },
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true
+      }
+    },
+    "TypeScript": {
+      "formatter": { "language_server": { "name": "biome" } },
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true
+      }
+    },
+    "TSX": {
+      "formatter": { "language_server": { "name": "biome" } },
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true
+      }
+    }
   }
 }
