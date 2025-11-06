@@ -1,0 +1,25 @@
+{{- if eq .chezmoi.os "darwin" }}
+# Linux-only window manager and desktop environment configs
+.config/hypr/
+.config/waybar/
+.config/wlogout/
+.config/gtk-3.0/
+.config/gtk-4.0/
+.config/xdg-desktop-portal/
+
+# Linux-only hardware configs
+.config/solaar/
+
+# Linux-only systemd services
+.config/systemd/
+
+# Linux-only installation scripts (target filenames without run_once_before_)
+00-system-update_linux.sh
+*_linux.sh
+enable-systemd-services.sh
+
+{{- else if eq .chezmoi.os "linux" }}
+# macOS-only installation scripts (target filenames without run_once_before_)
+*_darwin.sh
+
+{{- end }}

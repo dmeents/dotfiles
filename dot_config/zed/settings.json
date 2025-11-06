@@ -11,6 +11,8 @@
   "base_keymap": "JetBrains",
   "ui_font_size": 16,
   "buffer_font_size": 15.0,
+  "autosave": "on_focus_change",
+  "format_on_save": "on",
   "theme": {
     "mode": "dark",
     "light": "One Light",
@@ -42,6 +44,23 @@
   },
   "soft_wrap": "none",
   "tab_size": 2,
+  "file_watcher": {
+    "enabled": true
+  },
+  "git": {
+    "enabled": true,
+    "inline_blame": {
+      "enabled": true
+    },
+    "git_gutter": "tracked_files"
+  },
+  "terminal": {
+    "env": {
+      "EDITOR": "zed --wait"
+    },
+    "shell": "system",
+    "working_directory": "current_project_directory"
+  },
   "lsp": {
     "biome": {
       "settings": {
@@ -92,6 +111,33 @@
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true
       }
+    },
+    "Rust": {
+      "format_on_save": "on",
+      "tab_size": 4,
+      "formatter": "language_server"
+    },
+    "Python": {
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "black",
+          "arguments": ["-"]
+        }
+      },
+      "tab_size": 4
+    },
+    "Go": {
+      "format_on_save": "on",
+      "tab_size": 4,
+      "hard_tabs": true,
+      "formatter": "language_server"
+    },
+    "TOML": {
+      "tab_size": 2
+    },
+    "YAML": {
+      "tab_size": 2
     }
   }
 }

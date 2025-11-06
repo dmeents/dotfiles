@@ -4,7 +4,19 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Repository Overview
 
-This is a **chezmoi dotfiles repository** that manages system configuration files for a CachyOS Linux system running Hyprland window manager. The repository uses chezmoi's naming conventions where files prefixed with `dot_` become dotfiles (e.g., `dot_zshrc` → `~/.zshrc`) and `executable_` files become executable scripts.
+This is a **chezmoi dotfiles repository** that manages system configuration files for multiple platforms:
+- **Linux**: CachyOS running Hyprland window manager
+- **macOS**: Homebrew-based development environment
+
+The repository uses chezmoi's naming conventions where files prefixed with `dot_` become dotfiles (e.g., `dot_zshrc` → `~/.zshrc`) and `executable_` files become executable scripts.
+
+### Multi-Platform Support
+
+The repository uses chezmoi's templating system to manage platform-specific configurations:
+- **`.chezmoiignore`**: Excludes platform-specific files (e.g., Hyprland configs ignored on macOS)
+- **`_linux` / `_darwin` suffixes**: OS-specific scripts (e.g., `run_once_before_01-install-packages_linux.sh`)
+- **`.tmpl` files**: Template files with conditional logic (e.g., `dot_zshrc.tmpl`)
+- **Shared configs**: Cross-platform tools (zed, warp-terminal, vicinae) work on both systems
 
 ## Essential Commands
 

@@ -2,6 +2,7 @@
 # CachyOS Package Installation Script
 # This script installs all packages that were manually added after the initial OS setup
 # It runs once per machine during chezmoi init/apply
+# Note: pacman --needed flag skips already-installed packages
 
 set -e  # Exit on error
 
