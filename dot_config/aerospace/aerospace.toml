@@ -110,9 +110,7 @@ ctrl-shift-up = 'move up'
 ctrl-shift-right = 'move right'
 
 # Layout modes
-ctrl-f = 'layout floating tiling'  # Toggle floating
 ctrl-t = 'layout tiles'             # Tiles layout
-ctrl-s = 'layout accordion'         # Accordion layout
 
 # Fullscreen toggle (Hyprland-like)
 ctrl-m = 'fullscreen'

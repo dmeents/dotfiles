@@ -30,28 +30,9 @@
     "mode": "eager",
     "disabled_globs": [".env"]
   },
-  "inlay_hints": {
-    "enabled": true
-  },
-  "diagnostics": {
-    "inline": {
-      "enabled": true,
-      "update_debounce_ms": 150,
-      "padding": 4,
-      "min_column": 0,
-      "max_severity": null
-    }
-  },
   "soft_wrap": "none",
   "tab_size": 2,
-  "file_watcher": {
-    "enabled": true
-  },
   "git": {
-    "enabled": true,
-    "inline_blame": {
-      "enabled": true
-    },
     "git_gutter": "tracked_files"
   },
   "terminal": {
@@ -67,6 +48,14 @@
         "require_config_file": true
       }
     },
+    "eslint": {
+      "settings": {
+        "codeActionOnSave": {
+          "enable": true,
+          "mode": "all"
+        }
+      }
+    },
     "vtsls": {
       "settings": {
         "typescript": {
@@ -79,7 +68,7 @@
   },
   "languages": {
     "JSON": {
-      "formatter": { "language_server": { "name": "biome" } },
+      "formatter": "prettier",
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true
@@ -92,24 +81,27 @@
       "show_edit_predictions": false
     },
     "JavaScript": {
-      "formatter": { "language_server": { "name": "biome" } },
+      "formatter": "prettier",
       "code_actions_on_format": {
         "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
+        "source.organizeImports.biome": true,
+        "source.fixAll.eslint": true
       }
     },
     "TypeScript": {
-      "formatter": { "language_server": { "name": "biome" } },
+      "formatter": "prettier",
       "code_actions_on_format": {
         "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
+        "source.organizeImports.biome": true,
+        "source.fixAll.eslint": true
       }
     },
     "TSX": {
-      "formatter": { "language_server": { "name": "biome" } },
+      "formatter": "prettier",
       "code_actions_on_format": {
         "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
+        "source.organizeImports.biome": true,
+        "source.fixAll.eslint": true
       }
     },
     "Rust": {
