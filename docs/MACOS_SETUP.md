@@ -22,7 +22,7 @@ This will:
 - chezmoi, duf, fastfetch, glances, pv, smartmontools
 
 ### Development
-- git, gh (GitHub CLI), rustup-init, nano, zed, meld
+- git, gh (GitHub CLI), rustup, nano, zed, meld, go-task, mkcert
 
 ### Shell & Terminal
 - oh-my-zsh (installed to `~/.oh-my-zsh` on Mac)
@@ -30,6 +30,12 @@ This will:
 - zsh plugins: syntax-highlighting, autosuggestions, history-substring-search
 - fzf (fuzzy finder)
 - nvm (Node version manager)
+
+### File Management
+- rsync, wget, unzip
+
+### Network Tools
+- openssh, socat, awscli
 
 ### Fonts
 - JetBrains Mono & Nerd Font variant
@@ -39,6 +45,8 @@ This will:
 ### Applications
 - Firefox, Warp terminal, Logseq, Zen Browser
 - btop (system monitor)
+- AeroSpace (window manager)
+- aws-vault, Docker
 
 ## Platform-Specific Behavior
 
@@ -46,7 +54,9 @@ This will:
 The `.chezmoiignore` file excludes Linux-specific configs:
 - Hyprland, Waybar, wlogout (Wayland/Linux window manager)
 - GTK themes
+- Octopi, qt5ct, Vicinae
 - Solaar (Logitech device manager)
+- Systemd services
 - Linux-only scripts
 
 ### Templated Configs
@@ -60,22 +70,33 @@ The `.chezmoiignore` file excludes Linux-specific configs:
 
 **Plugin paths**: Adjusted for Homebrew locations (`/opt/homebrew/share/...`)
 
+### macOS-Specific Configs
+The following are only applied on macOS:
+- AeroSpace window manager config (`.config/aerospace/`)
+- SketchyBar config (`.config/sketchybar/`) - if configured
+
 ### Shared Configs
 These work on both platforms:
 - `.p10k.zsh` (Powerlevel10k theme)
 - `.bashrc` (if you use bash)
 - Zed editor config (`.config/zed/`)
 - Warp terminal config (`.config/warp-terminal/`)
-- Vicinae config (`.config/vicinae/`)
 
 ## Post-Install Setup
+
+### Xcode Command Line Tools
+If not already installed, you may need to accept the Xcode license:
+```bash
+sudo xcodebuild -license accept
+```
 
 ### Rust
 ```bash
 rustup-init
 ```
 
-### Oh-My-Zsh (if not auto-installed)
+### Oh-My-Zsh
+Oh-My-Zsh needs to be installed manually on macOS:
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
@@ -92,6 +113,12 @@ Then install Node:
 nvm install --lts
 nvm use --lts
 ```
+
+### AeroSpace (Window Manager)
+AeroSpace is installed automatically. To start using it:
+1. Launch AeroSpace from Applications
+2. Grant accessibility permissions in System Settings
+3. Configuration is at `~/.config/aerospace/aerospace.toml`
 
 ## Maintenance
 
