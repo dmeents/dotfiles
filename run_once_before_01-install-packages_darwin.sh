@@ -41,10 +41,10 @@ brew install \
 brew install \
     git \
     gh \
-    rustup-init \
+    rustup \
     nano \
-    zed \
-    meld
+    go-task \
+    mkcert
 
 # Fonts (via Homebrew Cask)
 brew install --cask \
@@ -67,14 +67,14 @@ brew install \
 # File management
 brew install \
     rsync \
-    unrar \
     wget \
     unzip
 
 # Network tools
 brew install \
     openssh \
-    socat
+    socat \
+    awscli
 
 # Process monitoring
 brew install \
@@ -85,7 +85,11 @@ brew install --cask \
     firefox \
     warp \
     logseq \
-    zen-browser
+    zen \
+    zed \
+    meld \
+    aerospace \
+    aws-vault \
+    docker
 
 echo "==> Homebrew package installation complete!"
-echo "==> Note: Run 'rustup-init' manually to set up Rust"

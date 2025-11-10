@@ -2,24 +2,26 @@
 
 <!-- You should change the system information below to match your own -->
 
-## System Configuration
+## System Configurations
+
+This set of rules is for general use on many machines. You will find multiple configurations for different platforms that this repository provides.
+
+**Linux Desktop (Personal PC)**
 
 - **CPU**: AMD Ryzen 7 9550x3D (16) @ 4.3GHz, 5.7GHz boos
 - **RAM**: 128.0GiB
 - **GPU**: AMD Radeon RX 7900 XT
 - **Storage**: 4TB SSD
-
-## Operating System
-
-**Current System (Linux)**:
-
 - **Distribution**: CachyOS Linux (Arch-based)
 - **Window Manager**: Hyprland (Wayland compositor)
 - **Shell**: zsh with oh-my-zsh and Powerlevel10k
 - **Package Manager**: pacman/paru (AUR)
 
-**Additional Platform (macOS)**:
+**MacBook Pro (Work Laptop)**
 
+- **CPU**: Apple M3 Max
+- **RAM**: 48.0GiB
+- **Storage**: 2TB SSD
 - **Package Manager**: Homebrew
 - **Shell**: zsh with oh-my-zsh and Powerlevel10k
 - **Terminal**: Warp, shared across both platforms

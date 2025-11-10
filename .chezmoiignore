@@ -7,6 +7,11 @@
 .config/gtk-4.0/
 .config/xdg-desktop-portal/
 
+# Linux-only applications
+.config/octopi/
+.config/qt5ct/
+.config/vicinae/
+
 # Linux-only hardware configs
 .config/solaar/
 
@@ -19,6 +24,10 @@
 enable-systemd-services.sh
 
 {{- else if eq .chezmoi.os "linux" }}
+# macOS-only window managers and menu bars
+.config/aerospace/
+.config/sketchybar/
+
 # macOS-only installation scripts (target filenames without run_once_before_)
 *_darwin.sh
 
