@@ -33,6 +33,9 @@
   "soft_wrap": "none",
   "tab_size": 2,
   "git": {
+    "inline_blame": {
+      "enabled": true
+    },
     "git_gutter": "tracked_files"
   },
   "terminal": {
