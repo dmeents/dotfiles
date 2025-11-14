@@ -25,11 +25,11 @@ This will:
 - git, gh (GitHub CLI), rustup, nano, zed, meld, go-task, mkcert
 
 ### Shell & Terminal
-- oh-my-zsh (installed to `~/.oh-my-zsh` on Mac)
-- powerlevel10k theme
-- zsh plugins: syntax-highlighting, autosuggestions, history-substring-search
-- fzf (fuzzy finder)
+- powerlevel10k theme (via Homebrew)
+- zsh plugins: syntax-highlighting, autosuggestions, history-substring-search (via Homebrew)
+- fzf (fuzzy finder with shell integration)
 - nvm (Node version manager)
+- Note: oh-my-zsh is NOT used on macOS; plugins are installed directly via Homebrew
 
 ### File Management
 - rsync, wget, unzip
@@ -62,13 +62,15 @@ The `.chezmoiignore` file excludes Linux-specific configs:
 ### Templated Configs
 `.zshrc` is templated to handle platform differences:
 
-**Linux**: System-wide oh-my-zsh (`/usr/share/oh-my-zsh`)
-**macOS**: User oh-my-zsh (`~/.oh-my-zsh`)
+**Linux**: Uses system-wide oh-my-zsh (`/usr/share/oh-my-zsh`)
+**macOS**: Uses Homebrew-installed zsh plugins directly (no oh-my-zsh)
 
 **Linux aliases**: `pacman` commands (update, cleanup, etc.)
 **macOS aliases**: `brew` commands
 
-**Plugin paths**: Adjusted for Homebrew locations (`/opt/homebrew/share/...`)
+**Plugin paths**: 
+- Linux: System package locations
+- macOS: Homebrew locations (`/opt/homebrew/share/...`)
 
 ### macOS-Specific Configs
 The following are only applied on macOS:
@@ -93,12 +95,6 @@ sudo xcodebuild -license accept
 ### Rust
 ```bash
 rustup-init
-```
-
-### Oh-My-Zsh
-Oh-My-Zsh needs to be installed manually on macOS:
-```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 ### NVM (Node.js)
@@ -170,11 +166,11 @@ brew list | grep zsh
 
 Should see: `powerlevel10k`, `zsh-syntax-highlighting`, `zsh-autosuggestions`, `zsh-history-substring-search`
 
-### Oh-My-Zsh Path Issues
-Verify `$ZSH` variable:
+### FZF Not Working
+Test fzf integration:
 ```bash
-echo $ZSH
-# Should output: /Users/YOUR_USERNAME/.oh-my-zsh
+fzf --version
+# Try Ctrl-R for history search or Ctrl-T for file search
 ```
 
 ## Template System Reference

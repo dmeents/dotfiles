@@ -17,7 +17,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/YOUR_USE
 ## 📋 What's Included
 
 ### Cross-Platform
-- **Shell**: Zsh with oh-my-zsh, Powerlevel10k theme
+- **Shell**: Zsh with Powerlevel10k theme (oh-my-zsh on Linux only, direct plugins on macOS)
 - **Editors**: Zed, Nano
 - **Terminal**: Warp terminal configuration
 - **Development**: Git, GitHub CLI, Rust toolchain
