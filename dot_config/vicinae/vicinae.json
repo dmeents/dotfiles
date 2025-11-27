@@ -12,11 +12,11 @@
     "searchFiles": true
   },
   "theme": {
-    "name": "vicinae-dark"
+    "name": "min-dark"
   },
   "window": {
     "csd": true,
-    "opacity": 0.9,
+    "opacity": 1.0,
     "rounding": 10
   }
 }

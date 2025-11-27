@@ -1,0 +1,33 @@
+# Min Dark - Minimal Dark Theme
+# Based on VS Code's Min Dark theme by Miguel Solorio
+# Structured after Ayu Dark's minimal approach
+
+[meta]
+version = 1
+name = "Min Dark"
+description = "Minimal dark theme with vibrant accents and excellent contrast"
+variant = "dark"
+
+[colors.core]
+background = "#151515"        # UI background (sidebar, panels)
+foreground = "#D4D4D4"        # Main text - bright and readable
+secondary_background = "#1a1a1a"  # Editor/main background (elevated)
+border = "#2a2a2a"            # More subtle borders (was #505050)
+accent = "#C792EA"            # Purple accent
+
+[colors.accents]
+blue = "#82AAFF"              # Variables, constants, interfaces
+green = "#C3E88D"             # Strings, success states
+magenta = "#C792EA"           # Functions, methods
+orange = "#FFAB70"            # Parameters, tags
+purple = "#C792EA"            # Functions, constructors
+red = "#FF5370"               # Keywords, errors
+yellow = "#FFCB6B"            # Classes, warnings
+cyan = "#89DDFF"              # Special elements
+
+[colors.list.item.selection]
+background = "#2a2a2a"        # Solid selection background
+secondary_background = "#2a2a2a"
+
+[colors.list.item.hover]
+background = "#202020"        # Subtle hover effect
