@@ -171,3 +171,8 @@ source /usr/share/fzf/completion.zsh
 # Initialize nvm
 source /usr/share/nvm/init-nvm.sh
 {{- end }}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Load local secrets (not tracked in git/chezmoi)
+[ -f ~/.secrets/github.env ] && source ~/.secrets/github.env

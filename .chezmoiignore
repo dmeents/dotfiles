@@ -33,3 +33,6 @@ set-default-terminal.sh
 *_darwin.sh
 
 {{- end }}
+
+# Never track secrets directory
+.secrets/

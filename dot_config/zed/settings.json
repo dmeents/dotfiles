@@ -7,6 +7,13 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  /* Duplicated key auto-commented: "agent": {
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-opus-4-5"
+    },
+    "model_parameters": []
+  }, */
   "show_edit_predictions": true,
   "base_keymap": "JetBrains",
   "ui_font_size": 16,
@@ -16,123 +23,169 @@
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Min Dark (Solid)"
+    "dark": "Min Dark (Solid)",
   },
   "tabs": {
     "file_icons": true,
-    "git_status": true
+    "git_status": true,
   },
   "ui_font_family": "JetBrainsMono Nerd Font Mono",
   "ui_font_features": {
-    "liga": true
+    "liga": true,
   },
   "edit_predictions": {
     "mode": "eager",
-    "disabled_globs": [".env"]
+    "disabled_globs": [".env"],
   },
   "soft_wrap": "none",
   "tab_size": 2,
   "git": {
     "inline_blame": {
-      "enabled": true
+      "enabled": true,
     },
-    "git_gutter": "tracked_files"
+    "git_gutter": "tracked_files",
   },
   "terminal": {
     "env": {
-      "EDITOR": "zed --wait"
+      "EDITOR": "zed --wait",
     },
     "shell": "system",
-    "working_directory": "current_project_directory"
+    "working_directory": "current_project_directory",
   },
   "lsp": {
     "biome": {
       "settings": {
-        "require_config_file": true
-      }
+        "require_config_file": true,
+      },
     },
     "eslint": {
       "settings": {
         "codeActionOnSave": {
           "enable": true,
-          "mode": "all"
-        }
-      }
+          "mode": "all",
+        },
+      },
     },
     "vtsls": {
       "settings": {
         "typescript": {
           "preferences": {
-            "importModuleSpecifier": "project-relative"
-          }
-        }
-      }
-    }
+            "importModuleSpecifier": "project-relative",
+          },
+        },
+      },
+    },
+  },
+  "agent": {
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-opus-4-5",
+    },
+  },
+  "context_servers": {
+    "poe2-filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/dmeents/Documents/projects/poe2-overlord",
+      ],
+    },
+    "poe2-git": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "/home/dmeents/Documents/projects/poe2-overlord",
+      ],
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}",
+      },
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+    },
+    "kagi": {
+      "command": "uvx",
+      "args": ["kagimcp"],
+      "env": {
+        "KAGI_API_KEY": "${KAGI_API_KEY}",
+      },
+    },
   },
   "languages": {
     "JSON": {
       "formatter": "prettier",
       "code_actions_on_format": {
         "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      }
+        "source.organizeImports.biome": true,
+      },
     },
     "Markdown": {
-      "formatter": "prettier"
+      "formatter": "prettier",
     },
     "Plain Text": {
-      "show_edit_predictions": false
+      "show_edit_predictions": false,
     },
     "JavaScript": {
       "formatter": "prettier",
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true,
-        "source.fixAll.eslint": true
-      }
+        "source.fixAll.eslint": true,
+      },
     },
     "TypeScript": {
       "formatter": "prettier",
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true,
-        "source.fixAll.eslint": true
-      }
+        "source.fixAll.eslint": true,
+      },
     },
     "TSX": {
       "formatter": "prettier",
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true,
-        "source.fixAll.eslint": true
-      }
+        "source.fixAll.eslint": true,
+      },
     },
     "Rust": {
       "format_on_save": "on",
       "tab_size": 4,
-      "formatter": "language_server"
+      "formatter": "language_server",
     },
     "Python": {
       "format_on_save": "on",
       "formatter": {
         "external": {
           "command": "black",
-          "arguments": ["-"]
-        }
+          "arguments": ["-"],
+        },
       },
-      "tab_size": 4
+      "tab_size": 4,
     },
     "Go": {
       "format_on_save": "on",
       "tab_size": 4,
       "hard_tabs": true,
-      "formatter": "language_server"
+      "formatter": "language_server",
     },
     "TOML": {
-      "tab_size": 2
+      "tab_size": 2,
     },
     "YAML": {
-      "tab_size": 2
-    }
-  }
+      "tab_size": 2,
+    },
+  },
 }
