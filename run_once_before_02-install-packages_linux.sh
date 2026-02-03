@@ -48,7 +48,6 @@ hyprland_packages=(
     rofi                         # Application launcher
     rofi-emoji                   # Emoji picker (depends on rofi)
     xdg-desktop-portal-xapp      # Additional portal
-    aylurs-gtk-shell-git         # AGS widget system
 )
 
 # Wayland utilities
@@ -303,6 +302,9 @@ aur_applications=(
     gitkraken             # Git GUI
     google-chrome         # Chrome browser
     zoom                  # Video conferencing
+    
+    # AGS and Astal
+    aylurs-gtk-shell-git       # AGS widget system
     
     # Astal libraries (for AGS)
     libastal-apps-git          # Apps library
