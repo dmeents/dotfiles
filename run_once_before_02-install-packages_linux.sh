@@ -251,7 +251,6 @@ cachyos_tools=(
 applications=(
     alacritty             # Terminal emulator
     firefox               # Web browser
-    google-chrome         # Chrome browser
     proton-mail-bin       # Email client
     proton-vpn-gtk-app    # Proton VPN
     warp-terminal         # Warp terminal (from warpdotdev repo)
@@ -264,19 +263,9 @@ applications=(
     zen-browser-bin       # Privacy browser
 )
 
-# Astal libraries (for AGS)
-astal_libs=(
-    libastal-apps-git          # Apps library
-    libastal-battery-git       # Battery library
-    libastal-bluetooth-git     # Bluetooth library
-    libastal-hyprland-git      # Hyprland library
-    libastal-io-git            # IO library
-    libastal-mpris-git         # MPRIS library
-    libastal-network-git       # Network library
-    libastal-notifd-git        # Notification library
-    libastal-tray-git          # System tray library
-    libastal-wireplumber-git   # Wireplumber library
-)
+# Astal libraries (for AGS) - AUR packages, installed later
+# These are commented out from official packages and listed in AUR section below
+# astal_libs=()
 
 # Graphics (AMD GPU specific)
 graphics=(
@@ -306,11 +295,26 @@ xorg=(
 
 # AUR Applications (install separately with paru/yay)
 aur_applications=(
+    # Applications
     beeper-v4-bin         # Chat client
     logseq-desktop        # Note taking
     vicinae-bin           # Tool
     exiled-exchange-2-bin # Game tool
     gitkraken             # Git GUI
+    google-chrome         # Chrome browser
+    zoom                  # Video conferencing
+    
+    # Astal libraries (for AGS)
+    libastal-apps-git          # Apps library
+    libastal-battery-git       # Battery library
+    libastal-bluetooth-git     # Bluetooth library
+    libastal-hyprland-git      # Hyprland library
+    libastal-io-git            # IO library
+    libastal-mpris-git         # MPRIS library
+    libastal-network-git       # Network library
+    libastal-notifd-git        # Notification library
+    libastal-tray-git          # System tray library
+    libastal-wireplumber-git   # Wireplumber library
 )
 
 # Python packages
@@ -353,7 +357,6 @@ misc=(
     usbutils            # USB utilities
     watchexec           # File watcher
     yt-dlp              # YouTube downloader
-    zoom                # Video conferencing
 )
 
 # Combine all official repo packages
@@ -376,7 +379,6 @@ all_packages=(
     "${kernel[@]}"
     "${cachyos_tools[@]}"
     "${applications[@]}"
-    "${astal_libs[@]}"
     "${graphics[@]}"
     "${xorg[@]}"
     "${python_packages[@]}"
