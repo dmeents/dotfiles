@@ -13,6 +13,7 @@ if ! grep -q "\[warpdotdev\]" /etc/pacman.conf; then
     sudo tee -a /etc/pacman.conf > /dev/null <<'EOF'
 
 [warpdotdev]
+SigLevel = Optional TrustAll
 Server = https://releases.warp.dev/linux/pacman/$repo/$arch
 EOF
     echo "==> warpdotdev repository added"
