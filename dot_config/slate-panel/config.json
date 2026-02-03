@@ -1,0 +1,73 @@
+{
+  "terminal": "warp-terminal",
+  "theme": {
+    "dark": "min-dark",
+    "light": "kanso-pearl"
+  },
+  "location": {
+    "provider": {
+      "name": "latitudeAndLongitude",
+      "options": {
+        "displayName": "Happy Valley, OR",
+        "latitude": 45.438561,
+        "longitude": -122.489044
+      }
+    }
+  },
+  "notifications": {
+    "timeoutSeconds": 5
+  },
+  "bar": {
+    "side": "top",
+    "start": {
+      "modules": [
+        {
+          "hyprWorkspace": {}
+        },
+        {
+          "hardware": {}
+        },
+        {
+          "systemUptime": {}
+        }
+      ]
+    },
+    "center": {
+      "modules": [
+        {
+          "clock": {
+            "timeFormat": "%I:%M %p"
+          }
+        },
+        {
+          "weather": {}
+        }
+      ]
+    },
+    "end": {
+      "modules": [
+        { "mediaPlayer": {} },
+        { "audio": {} },
+        {
+          "network": {
+            "popover": {
+              "vpnToggleButton": {
+                "disable": {
+                  "label": "Disconnect VPN",
+                  "action": { "runCommand": "tailscale down" }
+                },
+                "enable": {
+                  "label": "Connect VPN",
+                  "action": { "runCommand": "tailscale up --accept-routes" }
+                }
+              }
+            }
+          }
+        },
+        { "notifications": {} },
+        { "packageUpdates": {} },
+        { "power": {} }
+      ]
+    }
+  }
+}
