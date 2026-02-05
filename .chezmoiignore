@@ -29,6 +29,9 @@ set-default-terminal.sh
 .config/aerospace/
 .config/sketchybar/
 
+# macOS-only LaunchAgents
+Library/
+
 # macOS-only installation scripts (target filenames without run_once_before_)
 *_darwin.sh
 

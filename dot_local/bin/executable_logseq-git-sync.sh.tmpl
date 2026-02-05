@@ -1,0 +1,75 @@
+#!/bin/bash
+# Logseq Git Auto-Sync
+# Automatically commits and pushes changes in the Logseq graph directory.
+# Managed by chezmoi - deployed to ~/.local/bin/logseq-git-sync.sh
+
+set -euo pipefail
+
+GRAPH_DIR="{{ .logseq_graph_dir }}"
+
+# Exit cleanly if graph directory doesn't exist or isn't a git repo
+if [[ ! -d "$GRAPH_DIR/.git" ]]; then
+    exit 0
+fi
+
+# Ensure required tools are available
+if ! command -v git &>/dev/null; then
+    echo "[logseq-sync] git not found, skipping"
+    exit 0
+fi
+
+cd "$GRAPH_DIR"
+
+# Configure credential helper scoped to this repo if not already set
+if ! git config --local credential.helper &>/dev/null; then
+    if command -v gh &>/dev/null; then
+        git config --local credential.helper '!gh auth git-credential'
+        echo "[logseq-sync] configured gh as credential helper for $GRAPH_DIR"
+    else
+        echo "[logseq-sync] no credential helper and gh not found, push may fail"
+    fi
+fi
+
+# Stash any local changes, pull latest from remote, then restore
+HAS_CHANGES=false
+if [[ -n "$(git status --porcelain)" ]]; then
+    HAS_CHANGES=true
+    git stash --include-untracked -q
+fi
+
+if ! git pull --rebase -q 2>&1; then
+    echo "[logseq-sync] rebase conflict, aborting rebase"
+    git rebase --abort 2>/dev/null
+    if [[ "$HAS_CHANGES" == true ]]; then
+        git stash pop -q 2>/dev/null
+    fi
+    exit 0
+fi
+
+if [[ "$HAS_CHANGES" == true ]]; then
+    git stash pop -q 2>/dev/null || {
+        echo "[logseq-sync] stash pop conflict, dropping stash and skipping this cycle"
+        git checkout -- . 2>/dev/null
+        git stash drop -q 2>/dev/null
+        exit 0
+    }
+fi
+
+# Check for changes after pull + stash pop
+if [[ -z "$(git status --porcelain)" ]]; then
+    exit 0
+fi
+
+# Stage, commit, and push
+TIMESTAMP="$(date '+%Y-%m-%d %H:%M')"
+
+git add -A
+
+git commit -m "auto: logseq $TIMESTAMP"
+echo "[logseq-sync] committed at $TIMESTAMP"
+
+if git push 2>&1; then
+    echo "[logseq-sync] pushed to remote"
+else
+    echo "[logseq-sync] push failed (network or conflict), will retry next run"
+fi

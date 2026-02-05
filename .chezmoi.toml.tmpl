@@ -1,0 +1,8 @@
+{{- $logseqGraphDir := promptStringOnce . "logseq_graph_dir" "Logseq graph directory" (joinPath .chezmoi.homeDir "Documents/projects/logseq") -}}
+
+[data]
+logseq_graph_dir = {{ $logseqGraphDir | quote }}
+
+[git]
+autoCommit = true
+autoPush = true
