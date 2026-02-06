@@ -5,6 +5,14 @@
 
 set -euo pipefail
 
+# Ensure Homebrew is on PATH for LaunchAgent context
+for brew_prefix in /opt/homebrew /usr/local; do
+    if [[ -x "$brew_prefix/bin/brew" ]]; then
+        eval "$($brew_prefix/bin/brew shellenv)"
+        break
+    fi
+done
+
 GRAPH_DIR="{{ .logseq_graph_dir }}"
 
 # Exit cleanly if graph directory doesn't exist or isn't a git repo
@@ -16,6 +24,12 @@ fi
 if ! command -v git &>/dev/null; then
     echo "[logseq-sync] git not found, skipping"
     exit 0
+fi
+
+# Verify we can actually access the graph directory (macOS TCC protection)
+if ! ls "$GRAPH_DIR" &>/dev/null; then
+    echo "[logseq-sync] ERROR: cannot access $GRAPH_DIR — grant Full Disk Access to /bin/bash in System Settings > Privacy & Security"
+    exit 1
 fi
 
 cd "$GRAPH_DIR"
@@ -37,14 +51,15 @@ if [[ -n "$(git status --porcelain)" ]]; then
     git stash --include-untracked -q
 fi
 
-if ! git pull --rebase -q 2>&1; then
-    echo "[logseq-sync] rebase conflict, aborting rebase"
-    git rebase --abort 2>/dev/null
+PULL_OUTPUT=$(git pull --rebase 2>&1) || {
+    echo "[logseq-sync] pull --rebase failed:"
+    echo "$PULL_OUTPUT"
+    git rebase --abort 2>/dev/null || true
     if [[ "$HAS_CHANGES" == true ]]; then
-        git stash pop -q 2>/dev/null
+        git stash pop -q 2>/dev/null || true
     fi
     exit 0
-fi
+}
 
 if [[ "$HAS_CHANGES" == true ]]; then
     git stash pop -q 2>/dev/null || {
@@ -55,21 +70,19 @@ if [[ "$HAS_CHANGES" == true ]]; then
     }
 fi
 
-# Check for changes after pull + stash pop
-if [[ -z "$(git status --porcelain)" ]]; then
-    exit 0
+# Commit any uncommitted changes
+if [[ -n "$(git status --porcelain)" ]]; then
+    TIMESTAMP="$(date '+%Y-%m-%d %H:%M')"
+    git add -A
+    git commit -m "auto: logseq $TIMESTAMP"
+    echo "[logseq-sync] committed at $TIMESTAMP"
 fi
 
-# Stage, commit, and push
-TIMESTAMP="$(date '+%Y-%m-%d %H:%M')"
-
-git add -A
-
-git commit -m "auto: logseq $TIMESTAMP"
-echo "[logseq-sync] committed at $TIMESTAMP"
-
-if git push 2>&1; then
-    echo "[logseq-sync] pushed to remote"
-else
-    echo "[logseq-sync] push failed (network or conflict), will retry next run"
+# Push if there are any unpushed commits (including retries from previous runs)
+if [[ -n "$(git log @{u}.. --oneline 2>/dev/null)" ]]; then
+    if git push 2>&1; then
+        echo "[logseq-sync] pushed to remote"
+    else
+        echo "[logseq-sync] push failed (network or conflict), will retry next run"
+    fi
 fi
