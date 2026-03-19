@@ -69,6 +69,8 @@ media_packages=(
     gst-plugin-pipewire    # PipeWire plugin
     gst-plugins-bad        # Additional codecs
     gst-plugins-ugly       # Restricted codecs
+    gst-plugin-va          # GStreamer VA-API plugin
+    vlc                    # Media player
     vlc-plugins-all        # VLC plugins
     ffmpegthumbnailer      # Video thumbnails
     libdvdcss              # DVD decryption
@@ -83,6 +85,7 @@ dev_tools=(
     git                    # Version control
     github-cli             # GitHub CLI
     rustup                 # Rust toolchain
+    mold                   # Fast linker
     nano                   # Simple editor
     nano-syntax-highlighting  # Nano syntax (depends on nano)
     zed                    # Modern editor
@@ -91,6 +94,7 @@ dev_tools=(
     typescript             # TypeScript compiler
     pnpm                   # Node.js package manager
     ruby                   # Ruby programming language
+    sassc                  # Sass C compiler
 )
 
 # Fonts
@@ -108,7 +112,10 @@ fonts=(
     ttf-jetbrains-mono              # JetBrains Mono
     ttf-jetbrains-mono-nerd         # JetBrains Nerd
     ttf-meslo-nerd                  # Meslo Nerd
+    ttf-monaspace-variable          # Monaspace variable font
     ttf-opensans                    # Open Sans
+    otf-monaspace                   # Monaspace OTF
+    otf-monaspace-nerd              # Monaspace Nerd OTF
 )
 
 # Theming
@@ -126,6 +133,7 @@ services=(
     gnome-keyring         # Credential storage
     power-profiles-daemon # Power management (depends on upower)
     rtkit                 # Real-time kit
+    cups                  # Printing system
     sddm                  # Display manager
     plymouth              # Boot splash screen
     cachyos-plymouth-bootanimation  # CachyOS Plymouth theme
@@ -133,7 +141,9 @@ services=(
 
 # File management
 file_tools=(
+    file-roller        # Archive manager
     nemo               # File manager
+    nemo-fileroller    # Nemo archive integration
     rsync              # File sync
     unrar              # RAR extraction
     unzip              # ZIP extraction
@@ -159,6 +169,7 @@ network=(
     iptables-nft       # Firewall
     iwd                # Wireless daemon
     modemmanager       # Mobile broadband
+    netctl             # Network profile manager
     networkmanager     # Network management
     networkmanager-openvpn  # OpenVPN plugin
     nss-mdns           # mDNS/Avahi support
@@ -193,6 +204,7 @@ maintenance=(
     haveged                  # Entropy daemon
     logrotate                # Log rotation
     man-db                   # Manual pages
+    mkinitcpio               # Initramfs generator
     man-pages                # Manual pages content
     os-prober                # OS detection
     pacman-contrib           # Pacman scripts
@@ -257,6 +269,7 @@ applications=(
     solaar                # Logitech manager
     btop                  # Process viewer
     octopi                # Package manager GUI
+    dbeaver               # Database manager
     kleopatra             # Certificate manager
     ventoy-bin            # Bootable USB creator
     zen-browser-bin       # Privacy browser
@@ -340,6 +353,8 @@ runtimes=(
 # Note: steam depends on usbutils
 # Note: cachyos-hyprland-settings depends on xorg-xwayland (also pulled by hyprland)
 misc=(
+    libgtop             # System monitoring library
+    libwnck3            # Window navigator library
     sg3_utils           # SCSI utilities
     lsscsi              # List SCSI devices
     mtools              # MS-DOS tools

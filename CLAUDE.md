@@ -62,6 +62,10 @@ Modular design — `hyprland.conf` sources individual files from `config/`:
 
 Status bar with JSON config, CSS styling, and custom script-based modules in `modules/` (weather, spotify, mail, storage).
 
+### AeroSpace + SketchyBar (macOS)
+
+Tiling window manager (`dot_config/aerospace/aerospace.toml`) and custom status bar (`dot_config/sketchybar/`). These are the macOS equivalents of Hyprland + Waybar.
+
 ### Shell Configuration
 
 `dot_zshrc.tmpl` is the only templated shell file. It conditionally loads:
@@ -69,6 +73,18 @@ Status bar with JSON config, CSS styling, and custom script-based modules in `mo
 - **macOS**: Homebrew-installed plugins, brew aliases, no oh-my-zsh
 
 Secrets loaded from `~/.secrets/github.env` if present (gitignored).
+
+### Bootstrap Script Order
+
+Scripts run in numbered order during `chezmoi apply`. On Linux:
+1. `run_once_before_00-configure-repos_linux.sh` — add third-party repos (chaotic-aur, etc.)
+2. `run_once_before_01-system-update_linux.sh` — full system update
+3. `run_once_before_02-install-packages_linux.sh` — install all packages
+
+Post-apply hooks (run when their content changes):
+- `run_onchange_after_enable-systemd-services.sh` — enables hyprlock-on-suspend + logseq-git-sync timer (Linux)
+- `run_onchange_after_enable-launchd-agents_darwin.sh` — enables LaunchAgents (macOS)
+- `run_onchange_after_set-default-terminal.sh` — sets default terminal emulator
 
 ### Package Management
 
@@ -84,6 +100,10 @@ comm -23 <(pacman -Qe | awk '{print $1}' | sort) <(grep -oP '(?<=\s{4})\S+(?=\s+
 ### Zed Editor
 
 Settings at `dot_config/zed/` — JetBrains keymap, Claude AI integration, biome/eslint/prettier formatting, MCP context servers configured.
+
+## Documentation
+
+Detailed setup guides in `docs/`: `LINUX_SETUP.md`, `MACOS_SETUP.md`, `SYSTEM_CONFIG.md`.
 
 ## Hardware Context
 
