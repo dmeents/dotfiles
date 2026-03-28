@@ -36,7 +36,9 @@
       "modules": [
         {
           "clock": {
-            "timeFormat": "%I:%M %p"
+            "timeFormat": "%I:%M %p",
+            "dateFormat": "%a, %B %d",
+            "format": "{{date}}  {{time}}"
           }
         },
         {

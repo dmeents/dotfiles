@@ -60,7 +60,7 @@ This will:
 
 ### System Services
 - accountsservice, gnome-keyring, power-profiles-daemon
-- rtkit, sddm (display manager)
+- rtkit
 
 ### File Management
 - nemo, rsync, unrar, unzip, wget
@@ -119,9 +119,6 @@ rustup default stable
 
 ### Enable Services
 ```bash
-# Display manager (if not auto-enabled)
-sudo systemctl enable sddm
-
 # Power management
 sudo systemctl enable power-profiles-daemon
 ```
@@ -272,12 +269,6 @@ Check PipeWire status:
 ```bash
 systemctl --user status pipewire pipewire-pulse wireplumber
 systemctl --user restart pipewire pipewire-pulse wireplumber
-```
-
-### Display Manager Issues
-```bash
-sudo systemctl status sddm
-sudo systemctl restart sddm
 ```
 
 ### Pacman Lock File

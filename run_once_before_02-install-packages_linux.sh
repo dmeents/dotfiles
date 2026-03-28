@@ -134,7 +134,6 @@ services=(
     power-profiles-daemon # Power management (depends on upower)
     rtkit                 # Real-time kit
     cups                  # Printing system
-    sddm                  # Display manager
     plymouth              # Boot splash screen
     cachyos-plymouth-bootanimation  # CachyOS Plymouth theme
 )
