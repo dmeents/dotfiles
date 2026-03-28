@@ -4,7 +4,7 @@
 # It runs once per machine during chezmoi init/apply
 # Note: pacman --needed flag skips already-installed packages
 
-set -e  # Exit on error
+set -euo pipefail
 
 echo "==> Installing manually added packages..."
 

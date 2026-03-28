@@ -3,7 +3,7 @@
 # This script ensures the system is up-to-date and paru (AUR helper) is installed
 # It runs once per machine before installing packages
 
-set -e  # Exit on error
+set -euo pipefail
 
 echo "==> Updating system packages..."
 sudo pacman -Syu --noconfirm
@@ -21,14 +21,12 @@ else
     
     # Clone and build paru
     TEMP_DIR=$(mktemp -d)
+    trap 'cd ~ && rm -rf "$TEMP_DIR"' EXIT
     cd "$TEMP_DIR"
     git clone https://aur.archlinux.org/paru.git
     cd paru
     makepkg -si --noconfirm
-    
-    # Cleanup
     cd ~
-    rm -rf "$TEMP_DIR"
     
     echo "==> Paru installation complete!"
 fi

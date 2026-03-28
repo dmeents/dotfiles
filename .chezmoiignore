@@ -22,7 +22,7 @@
 00-system-update_linux.sh
 *_linux.sh
 enable-systemd-services.sh
-set-default-terminal.sh
+set-default-terminal_linux.sh
 
 {{- else if eq .chezmoi.os "linux" }}
 # macOS-only window managers and menu bars

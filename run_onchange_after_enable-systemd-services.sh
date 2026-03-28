@@ -2,7 +2,7 @@
 # Enable user systemd services
 # This runs after chezmoi applies files, only when this script changes
 
-set -e
+set -euo pipefail
 
 echo "==> Enabling systemd user services..."
 

@@ -2,16 +2,17 @@
 # Enable macOS LaunchAgents
 # This runs after chezmoi applies files, only when this script changes
 
-set -e
+set -euo pipefail
 
 echo "==> Loading LaunchAgents..."
 
 PLIST="$HOME/Library/LaunchAgents/com.dmeents.logseq-git-sync.plist"
+GUI_TARGET="gui/$(id -u)"
 
 if [[ -f "$PLIST" ]]; then
-    # Unload first in case it's already loaded (ignore errors)
-    launchctl unload "$PLIST" 2>/dev/null || true
-    if launchctl load "$PLIST"; then
+    # Remove existing service first (ignore errors if not loaded)
+    launchctl bootout "$GUI_TARGET" "$PLIST" 2>/dev/null || true
+    if launchctl bootstrap "$GUI_TARGET" "$PLIST"; then
         echo "  ✓ com.dmeents.logseq-git-sync loaded"
     else
         echo "  ⚠ Could not load com.dmeents.logseq-git-sync"

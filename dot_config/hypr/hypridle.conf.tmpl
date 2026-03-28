@@ -6,29 +6,50 @@ general {
 
 # Grace period warning before dimming
 listener {
+{{- if eq .machine_type "laptop" }}
+  timeout = 150
+{{- else }}
   timeout = 270
+{{- end }}
   on-timeout = notify-send "Idle Warning" "Screen will dim in 30 seconds" -u low -t 5000
 }
 
-# Dim screen after 5 minutes
+# Dim screen
 listener {
+{{- if eq .machine_type "laptop" }}
+  timeout = 180
+{{- else }}
   timeout = 300
+{{- end }}
   on-timeout = brightnessctl -s set 10
   on-resume = brightnessctl -r
 }
 
+# Lock screen
 listener {
+{{- if eq .machine_type "laptop" }}
+  timeout = 300
+{{- else }}
   timeout = 600
+{{- end }}
   on-timeout = loginctl lock-session
 }
 
+# DPMS off
 listener {
+{{- if eq .machine_type "laptop" }}
+  timeout = 600
+{{- else }}
   timeout = 900
+{{- end }}
   on-timeout = hyprctl dispatch dpms off
   on-resume = hyprctl dispatch dpms on
 }
+{{- if eq .machine_type "laptop" }}
 
-# listener {
-#   timeout = 1800
-#   on-timeout = systemctl suspend
-# }
+# Suspend on laptop after extended idle
+listener {
+  timeout = 1200
+  on-timeout = systemctl suspend
+}
+{{- end }}

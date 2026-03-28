@@ -68,8 +68,8 @@
     },
     "custom/screenshot_t":{
         "format":" ",
-        "on-click": "~/.config/hypr/scripts/screenshot_full",
-        "on-click-right":"~/.config/hypr/scripts/screenshot_area"
+        "on-click": "$HOME/.config/hypr/scripts/screenshot_full",
+        "on-click-right":"$HOME/.config/hypr/scripts/screenshot_area"
     },
 
     "clock#1": {
@@ -145,11 +145,11 @@
         "format-alt-click": "click-right",
         "return-type": "json",
         "interval": 60,
-        "exec": "~/.config/waybar/modules/storage.sh"
+        "exec": "$HOME/.config/waybar/modules/storage.sh"
     },
 
     "backlight": {
-        "device": "intel_backlight",
+        "device": "",
         "format": "{icon} {percent}%",
         "format-alt": "{percent}% {icon}",
         "format-alt-click": "click-right",
@@ -173,7 +173,7 @@
         "interval": 3600,
         "exec": "curl -s 'https://wttr.in/?format=1'",
         //"return-type": "json",
-        //"exec": "~/.config/waybar/modules/weather.sh",
+        //"exec": "$HOME/.config/waybar/modules/weather.sh",
         "exec-if": "ping wttr.in -c1"
     },
     "custom/pacman": {
@@ -188,7 +188,7 @@
     },
 
 "custom/spotify": {
-    "exec": "~/.config/waybar/mediaplayer.py --player spotify",
+    "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify",
     "format": "{}  ",
     "return-type": "json",
     "on-click": "playerctl play-pause",

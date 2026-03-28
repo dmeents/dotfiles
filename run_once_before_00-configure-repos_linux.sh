@@ -3,7 +3,7 @@
 # This script runs once per machine during chezmoi init/apply
 # It must run before package installation
 
-set -e  # Exit on error
+set -euo pipefail
 
 echo "==> Configuring custom repositories..."
 

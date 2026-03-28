@@ -6,7 +6,7 @@
 input {
     follow_mouse = 2 # 0|1|2|3
     float_switch_override_focus = 2
-    
+
     scroll_factor = 1.0
     scroll_method = "2fg"  # Two-finger scrolling
 
@@ -18,8 +18,17 @@ input {
         clickfinger_behavior = true
         middle_button_emulation = false
     }
+{{- if eq .machine_type "desktop" }}
 
     sensitivity = 1
     force_no_accel = 1
+{{- else if eq .machine_type "laptop" }}
+
+    sensitivity = 0
+    force_no_accel = 0
+{{- end }}
+
     numlock_by_default = true
+    repeat_rate = 50
+    repeat_delay = 300
 }

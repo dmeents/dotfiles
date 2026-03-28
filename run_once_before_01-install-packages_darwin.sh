@@ -4,7 +4,7 @@
 # It runs once per machine during chezmoi init/apply
 # Note: brew install is idempotent - already installed packages are skipped
 
-set -e  # Exit on error
+set -euo pipefail
 
 echo "==> Checking for Homebrew..."
 

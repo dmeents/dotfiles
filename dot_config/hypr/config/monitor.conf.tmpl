@@ -3,9 +3,29 @@
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 # Monitor wiki https://wiki.hyprland.org/Configuring/Monitors/
+{{- if eq .machine_type "desktop" }}
+# Desktop: Triple ultrawide setup
 monitor = DP-1, 6144x2560@120, 0x0, 1
 monitor = DP-6, 2048x2560@120, 0x0, 1
 monitor = DP-7, 4096x2560@60, auto-right, 1
+
+# Workspace pinning for desktop monitors
+workspace = 1, monitor:DP-1, persistent:true
+workspace = 2, monitor:DP-1, persistent:true
+workspace = 3, monitor:DP-1, persistent:true
+workspace = 4, monitor:DP-6, persistent:true
+workspace = 5, monitor:DP-6, persistent:true
+workspace = 6, monitor:DP-6, persistent:true
+workspace = 7, monitor:DP-7, persistent:true
+workspace = 8, monitor:DP-7, persistent:true
+workspace = 9, monitor:DP-7, persistent:true
+{{- else if eq .machine_type "laptop" }}
+# Laptop: Built-in display + optional external
+monitor = eDP-1, preferred, auto, 1
+# External monitors auto-detected
+{{- end }}
+
+# Fallback for any unmatched monitors
 monitor = , preferred, auto, 1
 
 # Electron based apps use X11 as default, auto should detect wayland

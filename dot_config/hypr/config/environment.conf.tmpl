@@ -6,6 +6,7 @@
 envd = HYPRCURSOR_SIZE,24
 envd = XCURSOR_SIZE,24
 envd = QT_CURSOR_SIZE,24
+{{- if eq .machine_type "desktop" }}
 
 # AMD gaming variables
 envd = PROTON_FSR4_UPGRADE,1
@@ -28,9 +29,17 @@ envd = RADV_PERFTEST,gpl,nggc,rt
 envd = VKD3D_CONFIG,dxr11,dxr
 envd = DXVK_CONFIG_FILE,$HOME/.config/dxvk.conf
 
-# CPU topology for Ryzen 9 9950X3D (16 cores, 8 per CCX)
+# CPU topology for Ryzen 9 7950X3D (16 cores, 8 per CCX)
 envd = WINE_CPU_TOPOLOGY,16:8
 
 # Additional Wayland optimizations
 envd = WLR_NO_HARDWARE_CURSORS,1
 envd = WLR_RENDERER_ALLOW_SOFTWARE_CURSORS,1
+{{- else if eq .machine_type "laptop" }}
+
+# Laptop: lighter environment, no dedicated GPU gaming vars
+envd = WLR_NO_HARDWARE_CURSORS,1
+
+# CPU topology for Ryzen 7 9550x3D (8 cores)
+envd = WINE_CPU_TOPOLOGY,8:4
+{{- end }}

@@ -1,7 +1,9 @@
 {{- $logseqGraphDir := promptStringOnce . "logseq_graph_dir" "Logseq graph directory" (joinPath .chezmoi.homeDir "Documents/projects/logseq") -}}
+{{- $machineType := promptStringOnce . "machine_type" "Machine type (desktop/laptop/macbook)" "desktop" -}}
 
 [data]
 logseq_graph_dir = {{ $logseqGraphDir | quote }}
+machine_type = {{ $machineType | quote }}
 
 [git]
 autoCommit = true
