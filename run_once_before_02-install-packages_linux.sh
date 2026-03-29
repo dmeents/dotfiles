@@ -77,6 +77,9 @@ media_packages=(
     alsa-firmware          # ALSA firmware
     alsa-utils             # ALSA utilities
     sof-firmware           # Sound firmware
+    cdparanoia             # CD audio extraction with error correction
+    flac                   # FLAC encoder/decoder
+    lame                   # MP3 encoder
 )
 
 # Development tools
@@ -306,6 +309,10 @@ xorg=(
 
 # AUR Applications (install separately with paru/yay)
 aur_applications=(
+    # CD ripping
+    abcde                 # CD encoder frontend
+    cd-discid             # MusicBrainz disc ID lookup
+
     # Applications
     beeper-v4-bin         # Chat client
     logseq-desktop        # Note taking
