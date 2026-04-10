@@ -20,9 +20,13 @@ workspace = 7, monitor:DP-7, persistent:true
 workspace = 8, monitor:DP-7, persistent:true
 workspace = 9, monitor:DP-7, persistent:true
 {{- else if eq .machine_type "laptop" }}
-# Laptop: Built-in display + optional external
-monitor = eDP-1, preferred, auto, 1
-# External monitors auto-detected
+# Laptop: Built-in display + optional external ultrawide
+monitor = eDP-1, 2256x1504@60, auto, 1.333
+monitor = DP-4, 6144x2560@120, 0x0, 1
+
+# Lid switch: disable laptop display when closed, re-enable when opened
+bindl = , switch:on:Lid Switch, exec, hyprctl keyword monitor "eDP-1, disable"
+bindl = , switch:off:Lid Switch, exec, hyprctl keyword monitor "eDP-1, 2256x1504@60, auto, 1.333"
 {{- end }}
 
 # Fallback for any unmatched monitors
