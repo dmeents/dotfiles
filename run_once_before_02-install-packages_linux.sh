@@ -85,6 +85,8 @@ media_packages=(
 # Development tools
 # Note: cachyos-zsh-config pulls in vim, hwdetect pulls in ripgrep
 dev_tools=(
+    ansible                # Automation/config management
+    ansible-lint           # Ansible linter
     git                    # Version control
     github-cli             # GitHub CLI
     rustup                 # Rust toolchain
@@ -187,7 +189,9 @@ storage=(
     btrfs-progs              # BTRFS utilities
     cachyos-snapper-support  # Snapshot support
     snapper                  # Snapshot manager
+    age                      # Modern encryption tool
     cryptsetup               # Disk encryption
+    sops                     # Secrets management
     device-mapper            # Device mapping
     dosfstools               # FAT utilities
     e2fsprogs                # ext2/3/4 utilities
@@ -344,7 +348,9 @@ python_packages=(
     python                 # Python language
     python-defusedxml      # XML parsing
     python-packaging       # Packaging utilities
+    python-httpx           # Async HTTP client
     python-pip             # Pip package manager
+    python-proxmoxer       # Proxmox API client
     python-pipx            # Pipx installer
     python-uv              # UV package manager
 )
