@@ -89,6 +89,8 @@ dev_tools=(
     ansible-lint           # Ansible linter
     git                    # Version control
     github-cli             # GitHub CLI
+    godot                  # Godot game engine (GDScript)
+    godot-mono             # Godot C# build (pulls dotnet-sdk-8.0)
     rustup                 # Rust toolchain
     mold                   # Fast linker
     nano                   # Simple editor
@@ -358,7 +360,8 @@ python_packages=(
 # Runtime environments
 runtimes=(
     aspnet-runtime-8.0     # ASP.NET runtime
-    dotnet-runtime-8.0     # .NET runtime
+    dotnet-runtime-8.0     # .NET 8 runtime (Godot 4.6 C# target)
+    dotnet-runtime         # Latest .NET runtime (Zed's Roslyn LSP needs net10+)
 )
 
 # Misc utilities
