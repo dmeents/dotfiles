@@ -39,3 +39,11 @@ Library/
 
 # Never track secrets directory
 .secrets/
+
+# Defensive: tool state files that have historically leaked identity info.
+# If `chezmoi add` ever sweeps these up again, do not apply them.
+**/*_preferences.json
+**/private_*.json
+.config/warp-terminal/user_preferences.json
+.config/warp-terminal/rules/system_info.md
+.config/systemd/user/solaar/config.yaml

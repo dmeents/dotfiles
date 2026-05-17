@@ -8,9 +8,9 @@
     "provider": {
       "name": "latitudeAndLongitude",
       "options": {
-        "displayName": "Happy Valley, OR",
-        "latitude": 45.438561,
-        "longitude": -122.489044
+        "displayName": {{ .location_display_name | quote }},
+        "latitude": {{ .location_latitude }},
+        "longitude": {{ .location_longitude }}
       }
     }
   },
@@ -38,7 +38,7 @@
           "clock": {
             "timeFormat": "%I:%M %p",
             "dateFormat": "%a, %B %d",
-            "format": "{{date}}  {{time}}"
+            "format": "{{ `{{date}}  {{time}}` }}"
           }
         },
         {
