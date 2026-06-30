@@ -1,0 +1,34 @@
+#!/bin/bash
+# Install CachyOS packages for the noctalia (v2) profile via shelly.
+# shelly replaced paru in CachyOS (June 2026); it resolves repo + AUR uniformly.
+# This script re-runs automatically whenever the manifest content changes:
+# manifest sha256: {{ include "dot_local/share/dotfiles/packages-linux.txt" | sha256sum }}
+set -uo pipefail
+
+MANIFEST="$HOME/.local/share/dotfiles/packages-linux.txt"
+if [ ! -r "$MANIFEST" ]; then
+    echo "==> package manifest not found at $MANIFEST; skipping" >&2
+    exit 0
+fi
+
+echo "==> Enabling AUR support in shelly"
+shelly config set AurEnabled true
+
+echo "==> Syncing system (shelly upgrade)"
+shelly upgrade -n || echo "warning: 'shelly upgrade' returned non-zero; continuing"
+
+# Read manifest, ignoring comments and blank lines.
+mapfile -t want < <(grep -vE '^[[:space:]]*(#|$)' "$MANIFEST")
+
+# Install only what's missing (pacman's local db covers repo + AUR packages).
+to_install=()
+for p in "${want[@]}"; do
+    pacman -Qq "$p" &>/dev/null || to_install+=("$p")
+done
+
+if ((${#to_install[@]})); then
+    echo "==> Installing ${#to_install[@]} missing package(s) via shelly..."
+    shelly install -n "${to_install[@]}"
+else
+    echo "==> All ${#want[@]} manifest packages already installed; nothing to do."
+fi
