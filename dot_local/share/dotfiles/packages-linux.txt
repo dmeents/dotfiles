@@ -100,11 +100,7 @@ haveged
 hdparm
 hwdetect
 hwinfo
-hypridle
-hyprlock
-hyprpaper
 hyprpicker
-hyprshot
 inetutils
 iptables-nft
 iwd
@@ -157,7 +153,6 @@ noto-color-emoji-fontconfig
 noto-fonts-cjk
 nss-mdns
 ntp
-octopi
 opencl-mesa
 opendesktop-fonts
 openssh
@@ -189,8 +184,6 @@ python-uv
 rebuild-detector
 reflector
 rocm-smi-lib
-rofi
-rofi-emoji
 rsync
 rtkit
 ruby
@@ -207,7 +200,6 @@ solaar
 sops
 steam
 sudo
-swappy
 sysfsutils
 texinfo
 ttf-bitstream-vera
