@@ -142,8 +142,6 @@ mold
 mtools
 nano
 nano-syntax-highlighting
-nemo
-nemo-fileroller
 netctl
 networkmanager
 networkmanager-openvpn
