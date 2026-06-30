@@ -40,6 +40,10 @@ Library/
 # Never track secrets directory
 .secrets/
 
+# noctalia (v2): track only the json config, not upstream plugin code or generated schemes
+.config/noctalia/plugins/
+.config/noctalia/colorschemes/
+
 # Defensive: tool state files that have historically leaked identity info.
 # If `chezmoi add` ever sweeps these up again, do not apply them.
 **/*_preferences.json
