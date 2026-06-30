@@ -37,6 +37,12 @@ Library/
 
 {{- end }}
 
+# Repo documentation / meta — not dotfiles, must not land in $HOME
+README.md
+CLAUDE.md
+WARP.md
+docs/
+
 # Never track secrets directory
 .secrets/
 
