@@ -4,9 +4,10 @@
 # flatpak); it is the ONLY installer used on this branch — never pacman/paru.
 # This script re-runs automatically whenever the manifest content changes:
 # manifest sha256: {{ include "dot_local/share/dotfiles/packages-linux.txt" | sha256sum }}
-# Note: no `set -e` — we attempt every package and report failures at the end so
-# one unavailable name cannot abort the whole install (shelly installs as a single
-# all-or-nothing transaction).
+# `shelly install` handles ONLY repo packages/files/URLs — AUR names must go
+# through `shelly aur install`. We classify each manifest entry at runtime and
+# route accordingly, so one AUR name can't abort the whole ALPM transaction.
+# No `set -e`: we attempt every package and report failures at the end.
 set -uo pipefail
 
 MANIFEST="$HOME/.local/share/dotfiles/packages-linux.txt"
@@ -28,32 +29,51 @@ shelly upgrade -n || echo "warning: 'shelly upgrade' returned non-zero; continui
 
 # Read manifest, ignoring comments and blank lines.
 mapfile -t want < <(grep -vE '^[[:space:]]*(#|$)' "$MANIFEST")
-
 if ((${#want[@]} == 0)); then
     echo "==> manifest is empty; nothing to install"
     exit 0
 fi
 
-# Fast path: install the whole manifest in one shelly transaction (idempotent —
-# already-installed packages are skipped).
-echo "==> Installing/verifying ${#want[@]} manifest package(s) via shelly..."
-if shelly install -n "${want[@]}"; then
-    echo "==> Package sync complete."
-    exit 0
+# Classify each name: `shelly query -j` prints a JSON object for repo/installed
+# packages and a plain "No package named ..." line for AUR-only names.
+repo=(); aur=()
+for p in "${want[@]}"; do
+    case "$(shelly query -j "$p" 2>/dev/null)" in
+        '{'*) repo+=("$p") ;;
+        *)    aur+=("$p") ;;
+    esac
+done
+
+failed=()
+
+# Repo packages: one ALPM transaction, falling back to per-package on failure.
+if ((${#repo[@]})); then
+    echo "==> Installing ${#repo[@]} repo package(s) via 'shelly install'..."
+    if ! shelly install -n "${repo[@]}"; then
+        echo "==> Repo batch failed; retrying per-package to isolate offenders..." >&2
+        for p in "${repo[@]}"; do
+            shelly install -n "$p" && continue
+            # A package already installed from the AUR also matches `shelly query`
+            # and lands here on a re-run — try the AUR path before giving up.
+            shelly aur install -n "$p" || failed+=("$p")
+        done
+    fi
 fi
 
-# The batch transaction is all-or-nothing, so a single unavailable/unresolvable
-# name aborts everything. Fall back to per-package installs to isolate the
-# offenders and install everything that can be installed.
-echo "==> Batch install failed; retrying per-package to isolate failures..." >&2
-failed=()
-for p in "${want[@]}"; do
-    shelly install -n "$p" || failed+=("$p")
-done
+# AUR packages: must use `shelly aur install`; per-package fallback on failure.
+if ((${#aur[@]})); then
+    echo "==> Installing ${#aur[@]} AUR package(s) via 'shelly aur install'..."
+    if ! shelly aur install -n "${aur[@]}"; then
+        echo "==> AUR batch failed; retrying per-package to isolate offenders..." >&2
+        for p in "${aur[@]}"; do
+            shelly aur install -n "$p" || failed+=("$p")
+        done
+    fi
+fi
 
 if ((${#failed[@]})); then
     echo "==> ${#failed[@]} package(s) could not be installed: ${failed[*]}" >&2
-    echo "==> Remove them from the manifest or fix their names, then re-apply." >&2
+    echo "==> Fix their names in the manifest or investigate, then re-apply." >&2
     exit 1
 fi
-echo "==> Package sync complete (per-package mode)."
+echo "==> Package sync complete."
