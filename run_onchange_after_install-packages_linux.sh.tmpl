@@ -4,7 +4,10 @@
 # flatpak); it is the ONLY installer used on this branch — never pacman/paru.
 # This script re-runs automatically whenever the manifest content changes:
 # manifest sha256: {{ include "dot_local/share/dotfiles/packages-linux.txt" | sha256sum }}
-set -euo pipefail
+# Note: no `set -e` — we attempt every package and report failures at the end so
+# one unavailable name cannot abort the whole install (shelly installs as a single
+# all-or-nothing transaction).
+set -uo pipefail
 
 MANIFEST="$HOME/.local/share/dotfiles/packages-linux.txt"
 if [ ! -r "$MANIFEST" ]; then
@@ -31,9 +34,26 @@ if ((${#want[@]} == 0)); then
     exit 0
 fi
 
-# shelly install is idempotent (already-installed packages are skipped), so we
-# hand it the whole manifest and let shelly resolve source + skip what's present.
-# A failure here is fatal so chezmoi surfaces it and does not mark the run done.
+# Fast path: install the whole manifest in one shelly transaction (idempotent —
+# already-installed packages are skipped).
 echo "==> Installing/verifying ${#want[@]} manifest package(s) via shelly..."
-shelly install -n "${want[@]}"
-echo "==> Package sync complete."
+if shelly install -n "${want[@]}"; then
+    echo "==> Package sync complete."
+    exit 0
+fi
+
+# The batch transaction is all-or-nothing, so a single unavailable/unresolvable
+# name aborts everything. Fall back to per-package installs to isolate the
+# offenders and install everything that can be installed.
+echo "==> Batch install failed; retrying per-package to isolate failures..." >&2
+failed=()
+for p in "${want[@]}"; do
+    shelly install -n "$p" || failed+=("$p")
+done
+
+if ((${#failed[@]})); then
+    echo "==> ${#failed[@]} package(s) could not be installed: ${failed[*]}" >&2
+    echo "==> Remove them from the manifest or fix their names, then re-apply." >&2
+    exit 1
+fi
+echo "==> Package sync complete (per-package mode)."
