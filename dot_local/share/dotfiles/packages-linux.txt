@@ -41,7 +41,6 @@ google-chrome
 haveged
 iptables-nft
 kleopatra
-kvantum-theme-nordic-git
 logseq-desktop
 memtester
 mold

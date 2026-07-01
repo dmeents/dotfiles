@@ -1,14 +1,20 @@
 #!/bin/bash
-# Install CachyOS packages for the noctalia (v2) profile via shelly.
-# shelly replaced paru in CachyOS (June 2026); it resolves repo + AUR uniformly.
+# Install CachyOS packages for the noctalia profile via shelly.
+# shelly is the CachyOS Noctalia spin's unified package manager (repo + AUR +
+# flatpak); it is the ONLY installer used on this branch — never pacman/paru.
 # This script re-runs automatically whenever the manifest content changes:
 # manifest sha256: {{ include "dot_local/share/dotfiles/packages-linux.txt" | sha256sum }}
-set -uo pipefail
+set -euo pipefail
 
 MANIFEST="$HOME/.local/share/dotfiles/packages-linux.txt"
 if [ ! -r "$MANIFEST" ]; then
     echo "==> package manifest not found at $MANIFEST; skipping" >&2
     exit 0
+fi
+
+if ! command -v shelly >/dev/null 2>&1; then
+    echo "==> shelly not found on PATH; cannot install packages" >&2
+    exit 1
 fi
 
 echo "==> Enabling AUR support in shelly"
@@ -20,15 +26,14 @@ shelly upgrade -n || echo "warning: 'shelly upgrade' returned non-zero; continui
 # Read manifest, ignoring comments and blank lines.
 mapfile -t want < <(grep -vE '^[[:space:]]*(#|$)' "$MANIFEST")
 
-# Install only what's missing (pacman's local db covers repo + AUR packages).
-to_install=()
-for p in "${want[@]}"; do
-    pacman -Qq "$p" &>/dev/null || to_install+=("$p")
-done
-
-if ((${#to_install[@]})); then
-    echo "==> Installing ${#to_install[@]} missing package(s) via shelly..."
-    shelly install -n "${to_install[@]}"
-else
-    echo "==> All ${#want[@]} manifest packages already installed; nothing to do."
+if ((${#want[@]} == 0)); then
+    echo "==> manifest is empty; nothing to install"
+    exit 0
 fi
+
+# shelly install is idempotent (already-installed packages are skipped), so we
+# hand it the whole manifest and let shelly resolve source + skip what's present.
+# A failure here is fatal so chezmoi surfaces it and does not mark the run done.
+echo "==> Installing/verifying ${#want[@]} manifest package(s) via shelly..."
+shelly install -n "${want[@]}"
+echo "==> Package sync complete."
