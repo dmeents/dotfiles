@@ -1,5 +1,5 @@
 {{- $logseqGraphDir := promptStringOnce . "logseq_graph_dir" "Logseq graph directory" (joinPath .chezmoi.homeDir "Documents/projects/logseq") -}}
-{{- $machineType := promptStringOnce . "machine_type" "Machine type (desktop/laptop/macbook)" "desktop" -}}
+{{- $machineType := promptStringOnce . "machine_type" "Machine type (desktop/laptop)" "desktop" -}}
 {{- $locationDisplayName := promptStringOnce . "location_display_name" "Location display name (e.g. 'Portland, OR')" "Portland, OR" -}}
 {{- $locationLatitude := promptStringOnce . "location_latitude" "Location latitude" "45.5152" -}}
 {{- $locationLongitude := promptStringOnce . "location_longitude" "Location longitude" "-122.6784" -}}

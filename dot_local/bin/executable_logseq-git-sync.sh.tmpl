@@ -5,14 +5,6 @@
 
 set -euo pipefail
 
-# Ensure Homebrew is on PATH for LaunchAgent context
-for brew_prefix in /opt/homebrew /usr/local; do
-    if [[ -x "$brew_prefix/bin/brew" ]]; then
-        eval "$($brew_prefix/bin/brew shellenv)"
-        break
-    fi
-done
-
 GRAPH_DIR="{{ .logseq_graph_dir }}"
 
 # Exit cleanly if graph directory doesn't exist or isn't a git repo
@@ -24,12 +16,6 @@ fi
 if ! command -v git &>/dev/null; then
     echo "[logseq-sync] git not found, skipping"
     exit 0
-fi
-
-# Verify we can actually access the graph directory (macOS TCC protection)
-if ! ls "$GRAPH_DIR" &>/dev/null; then
-    echo "[logseq-sync] ERROR: cannot access $GRAPH_DIR — grant Full Disk Access to /bin/bash in System Settings > Privacy & Security"
-    exit 1
 fi
 
 cd "$GRAPH_DIR"
