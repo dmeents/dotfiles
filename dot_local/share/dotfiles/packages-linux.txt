@@ -47,6 +47,7 @@ sassc
 socat
 solaar
 sops
+starship
 ttf-jetbrains-mono
 ttf-jetbrains-mono-nerd
 typescript
