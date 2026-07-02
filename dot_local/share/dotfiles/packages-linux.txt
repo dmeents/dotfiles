@@ -51,7 +51,7 @@ ttf-jetbrains-mono-nerd
 typescript
 vlc
 watchexec
-wezterm
+wezterm-git
 yt-dlp
 zed
 zellij
