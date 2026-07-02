@@ -34,14 +34,21 @@ if ((${#want[@]} == 0)); then
     exit 0
 fi
 
-# Classify each name: `shelly query -j` prints a JSON object for repo/installed
-# packages and a plain "No package named ..." line for AUR-only names.
+# Classify each name as repo (in a sync database) vs AUR-only.
+# NOTE: we deliberately do NOT use `shelly query -j` here. It reports every
+# *installed* package as Repository="local", so an installed AUR package looks
+# identical to a repo package and gets routed into the `shelly install` batch —
+# which then aborts with "target not found in any sync database". Instead we ask
+# the sync databases directly with a read-only `pacman -Si` (exit 0 == the name
+# resolves in a sync repo). This is a query only; `shelly` is still the sole
+# INSTALLER on this branch. The dbs were just refreshed by `shelly upgrade` above.
 repo=(); aur=()
 for p in "${want[@]}"; do
-    case "$(shelly query -j "$p" 2>/dev/null)" in
-        '{'*) repo+=("$p") ;;
-        *)    aur+=("$p") ;;
-    esac
+    if pacman -Si -- "$p" >/dev/null 2>&1; then
+        repo+=("$p")
+    else
+        aur+=("$p")
+    fi
 done
 
 failed=()
