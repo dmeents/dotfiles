@@ -68,11 +68,15 @@ function extract --description 'Extract common archive formats'
     end
 end
 
-# --- Secrets (optional; sourced only if present) ----------------------------
-# Bash-style KEY=value file, parsed into fish env vars.
-if test -f ~/.secrets/github.env
-    for line in (cat ~/.secrets/github.env)
-        string match -qr '^\s*(#|$)' -- $line; and continue
-        set -gx (string split -m1 '=' -- (string replace -r '^\s*export\s+' '' -- $line))
+# --- Secrets (optional) -----------------------------------------------------
+# Source every ~/.secrets/*.env file (bash-style `export KEY=value`). Not
+# tracked in git/chezmoi; drop a new *.env in and it loads on the next shell.
+if test -d ~/.secrets
+    for envfile in ~/.secrets/*.env
+        test -f $envfile; or continue
+        for line in (cat $envfile)
+            string match -qr '^\s*(#|$)' -- $line; and continue
+            set -gx (string split -m1 '=' -- (string replace -r '^\s*export\s+' '' -- $line))
+        end
     end
 end
