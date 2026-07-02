@@ -23,6 +23,7 @@ dbeaver
 discord
 file-roller
 fuse2
+ghostty
 github-cli
 gitkraken
 gnome-keyring
@@ -51,7 +52,6 @@ ttf-jetbrains-mono-nerd
 typescript
 vlc
 watchexec
-wezterm-git
 yt-dlp
 zed
 zellij
