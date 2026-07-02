@@ -1,0 +1,38 @@
+# Ghostty config — managed by chezmoi. Reference: https://ghostty.org/docs/config
+# Ghostty reads THIS file (~/.config/ghostty/config). A file named
+# "config.ghostty" is ignored — that stray empty one was a misnamed leftover.
+
+# --- Appearance -------------------------------------------------------------
+theme = Catppuccin Mocha
+
+# JetBrainsMono Nerd Font: has programming ligatures AND the glyphs starship
+# needs. Ghostty renders ligatures by default for fonts that provide them,
+# so no extra setting is required to get them.
+font-family = JetBrainsMono Nerd Font
+font-size = 12
+
+# Subtle translucency + blur for a modern look (Hyprland compositor handles it).
+background-opacity = 0.95
+background-blur = true
+
+# Breathing room around the text grid.
+window-padding-x = 12
+window-padding-y = 10
+window-padding-balance = true
+
+cursor-style = block
+cursor-style-blink = false
+mouse-hide-while-typing = true
+
+# --- Tabs & window ----------------------------------------------------------
+# Tabs are built in — no multiplexer needed:
+#   New tab            Ctrl+Shift+T
+#   Next / Prev tab    Ctrl+Tab / Ctrl+Shift+Tab
+#   Go to tab N        Alt+1 .. Alt+9
+#   Split right/down   Ctrl+Shift+O / Ctrl+Shift+E
+gtk-tabs-location = top
+window-theme = ghostty
+
+# --- Behavior ---------------------------------------------------------------
+confirm-close-surface = false
+copy-on-select = clipboard
