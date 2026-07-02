@@ -1,0 +1,31 @@
+// Zellij configuration — the multi-workflow layer on top of WezTerm.
+// Nord theme to match the terminal palette; Wayland clipboard via wl-copy.
+
+theme "nord"
+
+// Wayland clipboard (wl-clipboard ships with the Noctalia spin).
+copy_command "wl-copy"
+copy_clipboard "system"
+copy_on_select true
+
+// Persist sessions across restarts so workflows survive reboots.
+session_serialization true
+pane_viewport_serialization true
+
+// UI
+pane_frames true
+default_layout "compact"
+mouse_mode true
+scroll_buffer_size 10000
+show_startup_tips false
+show_release_notes false
+
+ui {
+    pane_frames {
+        rounded_corners true
+        hide_session_name false
+    }
+}
+
+// No keybind overrides: Zellij's defaults (Ctrl+p/t/n/s/o/h) don't collide with
+// WezTerm's Ctrl+a leader, and Ctrl+g already toggles Zellij's locked mode.

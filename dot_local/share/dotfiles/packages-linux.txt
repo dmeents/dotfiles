@@ -51,7 +51,9 @@ ttf-jetbrains-mono-nerd
 typescript
 vlc
 watchexec
+wezterm
 yt-dlp
 zed
+zellij
 zen-browser-bin
 zoom
