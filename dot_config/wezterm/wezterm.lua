@@ -50,7 +50,10 @@ config.colors = {
 config.window_background_opacity = 0.96
 config.window_decorations = "NONE" -- Hyprland handles borders/rounding
 config.window_padding = { left = 10, right = 10, top = 8, bottom = 6 }
-config.enable_wayland = true
+-- This wezterm build's native Wayland backend fails to map a window on
+-- Hyprland (the gui process starts but no surface appears). Run under XWayland,
+-- which is reliable here. Revert to true if a newer wezterm fixes Wayland.
+config.enable_wayland = false
 config.adjust_window_size_when_changing_font_size = false
 
 -- ── Tab bar ───────────────────────────────────────────────────────────────
