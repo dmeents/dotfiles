@@ -1,4 +1,16 @@
 {
+  "outline_panel": {
+    "button": false
+  },
+  "collaboration_panel": {
+    "button": false
+  },
+  "git_panel": {
+    "dock": "left"
+  },
+  "project_panel": {
+    "dock": "left"
+  },
   "show_edit_predictions": true,
   "base_keymap": "JetBrains",
   "ui_font_size": 16,
@@ -31,6 +43,7 @@
     "git_gutter": "tracked_files"
   },
   "terminal": {
+    "button": false,
     "env": {
       "EDITOR": "zed --wait"
     },
