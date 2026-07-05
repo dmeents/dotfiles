@@ -19,8 +19,8 @@
   "format_on_save": "on",
   "theme": {
     "mode": "dark",
-    "light": "One Light",
-    "dark": "Min Dark (Solid)"
+    "light": "Noctalia Light",
+    "dark": "Noctalia Dark"
   },
   "tabs": {
     "file_icons": true,
