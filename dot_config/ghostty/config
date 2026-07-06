@@ -3,7 +3,7 @@
 # "config.ghostty" is ignored — that stray empty one was a misnamed leftover.
 
 # --- Appearance -------------------------------------------------------------
-theme = Catppuccin Mocha
+theme = noctalia
 
 # JetBrainsMono Nerd Font: has programming ligatures AND the glyphs starship
 # needs. Ghostty renders ligatures by default for fonts that provide them,
