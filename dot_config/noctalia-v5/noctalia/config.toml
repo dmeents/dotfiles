@@ -18,6 +18,8 @@ date_format = "%A, %B %-d"
 polkit_agent = true
 # Built-in clipboard history replaces the v4 cliphist integration.
 clipboard_enabled = true
+# Everything is pre-configured via these dotfiles; skip the first-run wizard.
+setup_wizard_enabled = false
 
 # --- Bar: match v4 layout (top, always visible) ---
 [bar.default]
