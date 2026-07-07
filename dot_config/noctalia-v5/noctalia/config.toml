@@ -1,0 +1,68 @@
+# Noctalia v5 (beta) — hand-written config, ported from v4 settings.json.
+# Isolated config home: ~/.config/noctalia-v5/noctalia/ (see environment.d/noctalia-v5.conf).
+# GUI tweaks land in $NOCTALIA_STATE_HOME/noctalia/settings.toml and override this.
+# Managed by chezmoi.
+
+[theme]
+mode = "dark"
+source = "custom"
+custom_palette = "Oxide"
+
+[shell]
+avatar_path = "/home/davidm/Pictures/profile-pic5.jpg"
+font_family = "DejaVu LGC Sans"
+# 12-hour clock (v4 used h:mm AP)
+time_format = "{:%I:%M %p}"
+date_format = "%A, %B %-d"
+# Built-in polkit agent replaces the v4 polkit-agent plugin.
+polkit_agent = true
+# Built-in clipboard history replaces the v4 cliphist integration.
+clipboard_enabled = true
+
+# --- Bar: match v4 layout (top, always visible) ---
+[bar.default]
+position = "top"
+auto_hide = false
+start = [ "workspaces", "cpu", "temp", "disk", "active_window" ]
+center = [ "clock", "media" ]
+end = [ "tray", "notifications", "battery", "control-center" ]
+
+# Disk sysmon widget (v4 SystemMonitor showed CPU usage/temp + disk)
+[widget.disk]
+type = "sysmon"
+stat = "disk_pct"
+
+# --- Weather: enabled, Fahrenheit, auto-locate (v4) ---
+[location]
+auto_locate = true
+
+[weather]
+enabled = true
+unit = "imperial"
+
+# --- Idle/lock (v4: lock 600s, screen-off 300s, suspend 1800s) ---
+# `action` must be set explicitly; a partial table does not inherit the default.
+[idle.behavior.lock]
+enabled = true
+action = "lock"
+timeout = 600.0
+
+[idle.behavior.screen-off]
+enabled = true
+action = "screen_off"
+timeout = 300.0
+
+[idle.behavior.lock-and-suspend]
+enabled = true
+action = "lock_and_suspend"
+timeout = 1800.0
+
+# --- Wallpaper (v4: ~/Pictures/Wallpapers, random 300s, automation off) ---
+[wallpaper]
+enabled = true
+directory = "/home/davidm/Pictures/Wallpapers"
+
+[wallpaper.automation]
+enabled = false
+interval_seconds = 300
+order = "random"
