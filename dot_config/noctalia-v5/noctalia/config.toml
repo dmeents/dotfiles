@@ -5,8 +5,8 @@
 
 [theme]
 mode = "dark"
-source = "custom"
-custom_palette = "Oxide"
+source = "community"
+community_palette = "Oxide"
 
 [shell]
 avatar_path = "/home/davidm/Pictures/profile-pic5.jpg"
