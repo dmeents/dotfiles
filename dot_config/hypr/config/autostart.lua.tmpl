@@ -4,6 +4,9 @@
 hl.on("hyprland.start", function ()
     hl.exec_cmd("dbus-update-activation-environment --systemd --all")
     -- Noctalia with isolated config/state home (see environment.d/noctalia-v5.conf).
-    hl.exec_cmd("env NOCTALIA_CONFIG_HOME={{ .chezmoi.homeDir }}/.config/noctalia-v5 NOCTALIA_STATE_HOME={{ .chezmoi.homeDir }}/.local/state/noctalia-v5 noctalia")
+    -- Wrapped in a restart loop: the v5 beta shell occasionally segfaults, and a
+    -- fire-and-forget launch would leave the session with no bar until reboot.
+    -- The `sleep 2` backoff avoids a tight crash-loop; hyprland reaps the loop on logout.
+    hl.exec_cmd([[bash -c 'while true; do env NOCTALIA_CONFIG_HOME={{ .chezmoi.homeDir }}/.config/noctalia-v5 NOCTALIA_STATE_HOME={{ .chezmoi.homeDir }}/.local/state/noctalia-v5 noctalia; sleep 2; done']])
     hl.exec_cmd("xhost +SI:localuser:root")
 end)
