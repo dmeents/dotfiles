@@ -61,8 +61,11 @@ drawer = true
 [desktop_widgets]
 enabled = false
 
-# Lockscreen layout (GUI tweak). Note: display-specific — the widget key/output
-# and pixel coords target this laptop's eDP-1; would need adjusting on new hardware.
+# Lockscreen layout (GUI tweak) — display-specific: the widget key/output and
+# pixel coords target this laptop's eDP-1 panel, so it's gated to the laptop via
+# the machine_type prompt. On a desktop the block is omitted and Noctalia's
+# default lockscreen (login box auto-placed on the active output) is used.
+{{- if eq .machine_type "laptop" }}
 [lockscreen_widgets]
 enabled = false
 schema_version = 2
@@ -92,6 +95,7 @@ show_caps_lock = true
 show_keyboard_layout = true
 show_login_button = true
 show_password_hint = true
+{{- end }}
 
 # Disk sysmon widget (v4 SystemMonitor showed CPU usage/temp + disk)
 [widget.disk]
