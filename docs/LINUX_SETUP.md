@@ -22,7 +22,7 @@ Run this from an interactive shell — shelly needs to prompt for sudo.
 The `cachyos-hypr-noctalia` meta-package and `/etc/skel` supply the whole desktop, so none of it is in this repo:
 
 - Hyprland compositor + its `~/.config/hypr/*.lua` config
-- The **Noctalia** shell (Quickshell), autostarted via `qs -c noctalia-shell`
+- The **Noctalia** shell binary (`noctalia`, v5) — this repo autostarts it with an isolated config/state home via the tracked hypr lua
 - kitty terminal, GTK/Qt theming (adw-gtk3, qt6ct), portals, `uwsm`
 - PipeWire/WirePlumber audio, NetworkManager, Bluetooth
 - Base system, kernels, firmware, filesystem tools
@@ -50,9 +50,9 @@ comm -23 <(pacman -Qeq | sort) \
 
 ## Noctalia Settings
 
-`dot_config/noctalia/create_settings.json.tmpl` seeds `~/.config/noctalia/settings.json` **once**. Noctalia rewrites this file as you change settings in its UI, so chezmoi never overwrites it after the first apply. `colors.json` and other generated state are ignored.
+`dot_config/noctalia-v5/noctalia/config.toml.tmpl` is the hand-written **v5** base config (theme, bar, shell, idle, weather, wallpaper, lockscreen). The config/state home is isolated via `dot_config/environment.d/noctalia-v5.conf` (`NOCTALIA_CONFIG_HOME`/`NOCTALIA_STATE_HOME`). Noctalia's GUI writes tweaks to the state `settings.toml` (`$NOCTALIA_STATE_HOME/noctalia/settings.toml`, untracked and app-owned) which **override** `config.toml`; durable tweaks get folded back into `config.toml`.
 
-To re-seed from the repo (discarding live changes): delete `~/.config/noctalia/settings.json`, then `chezmoi apply`.
+To reset to the repo config: clear (or delete) the overrides in the state `settings.toml`, then re-login.
 
 ## Maintenance
 
@@ -78,7 +78,7 @@ Gaming CPU-governor service (root-level, not chezmoi-managed): see `SYSTEM_CONFI
 
 **Audio** — `systemctl --user restart pipewire pipewire-pulse wireplumber`
 
-**Noctalia shell** — restart with `qs -c noctalia-shell` (or re-login); logs via `journalctl --user`.
+**Noctalia shell** — restart by re-logging in (or relaunch `noctalia` with the isolated-home env from the hypr autostart); logs via `journalctl --user`.
 
 **Hyprland** — logs at `~/.cache/hyprland/hyprland.log`.
 

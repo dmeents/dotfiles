@@ -34,7 +34,8 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/YOUR_USE
 ├── .chezmoiignore
 ├── .chezmoi.toml.tmpl                            # Prompts: machine type, weather location
 ├── dot_config/
-│   ├── noctalia/create_settings.json.tmpl        # Noctalia settings (seeded once)
+│   ├── noctalia-v5/                              # Noctalia v5 config (config.toml, palettes, templates)
+│   ├── hypr/config/                              # Noctalia v5 autostart + keybinds (.lua.tmpl)
 │   ├── zed/                                       # Zed editor
 │   ├── systemd/user/                              # Hyprland uwsm timeout override
 │   └── dxvk.conf

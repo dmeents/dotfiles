@@ -52,11 +52,12 @@ hyprctl reload             # Reload Hyprland after config changes
 
 ### Desktop (provided by the spin — NOT tracked)
 
-Hyprland config (`~/.config/hypr/*.lua`), the Noctalia shell, kitty, GTK/Qt theming, and portals all come from `cachyos-hypr-noctalia` via `/etc/skel`. Hyprland autostarts the shell with `qs -c noctalia-shell`. None of this lives in the repo — edit it live or, if a change is worth version-controlling, add just that file here.
+Hyprland config (`~/.config/hypr/*.lua`), kitty, GTK/Qt theming, and portals come from `cachyos-hypr-noctalia` via `/etc/skel`. Hyprland autostarts Noctalia **v5** (`noctalia`, with an isolated config/state home). Most of this stays outside the repo — edit it live; only files worth version-controlling (e.g. the Noctalia autostart/keybinds tweaks below) are added here. The old v4 shell (`noctalia-shell`/`noctalia-qs`, Quickshell, launched via `qs -c noctalia-shell`) has been fully retired.
 
 ### Tracked configs
 
-- `dot_config/noctalia/create_settings.json.tmpl` — the Noctalia shell settings, **seeded once**. Noctalia rewrites this file at runtime, so `create_` prevents chezmoi from ever overwriting live edits. `colors.json` and other Noctalia state are runtime-generated and ignored.
+- `dot_config/noctalia-v5/` — Noctalia **v5** config: hand-written `config.toml.tmpl` (theme, bar, shell, idle, weather, wallpaper, lockscreen), `templates.toml`, custom palettes, and the Beeper user template. Uses an isolated config/state home via `NOCTALIA_CONFIG_HOME`/`NOCTALIA_STATE_HOME` (set in `dot_config/environment.d/noctalia-v5.conf` and inlined in the hypr lua). GUI tweaks land in the state `settings.toml` (untracked, app-owned) and override `config.toml`; durable ones are folded back into `config.toml`. Community palettes/templates are seeded under `dot_local/private_state/...` (`create_`) or re-fetched by the app.
+- `dot_config/hypr/config/{autostart,keybinds}.lua.tmpl` — Noctalia v5 autostart + IPC keybinds (home paths templated with `{{ .chezmoi.homeDir }}`).
 - `dot_config/zed/` — Zed editor (settings, keymap, themes).
 - `dot_config/dxvk.conf` — gaming (DXVK) tweaks.
 - `dot_config/systemd/user/` — a Hyprland uwsm service-timeout override.
@@ -68,7 +69,7 @@ Hyprland config (`~/.config/hypr/*.lua`), the Noctalia shell, kitty, GTK/Qt them
 
 ### Config generation
 
-`.chezmoi.toml.tmpl` prompts once for machine type and weather location (used by the Noctalia settings template) and stores them under `[data]`.
+`.chezmoi.toml.tmpl` prompts once for machine type and weather location and stores them under `[data]` for use by templates.
 
 ## Docs
 
