@@ -9,7 +9,7 @@ source = "community"
 community_palette = "Oxide"
 
 [shell]
-avatar_path = "/home/davidm/Pictures/profile-pic5.jpg"
+avatar_path = "{{ .chezmoi.homeDir }}/Pictures/profile-pic5.jpg"
 font_family = "DejaVu LGC Sans"
 # 12-hour clock (v4 used h:mm AP)
 time_format = "{:%I:%M %p}"
@@ -53,12 +53,41 @@ width = 900
 [widget.tray]
 drawer = true
 
-# Desktop + lockscreen widget layers off (GUI tweak); positions stay in state.
+# Desktop widget layer off (GUI tweak).
 [desktop_widgets]
 enabled = false
 
+# Lockscreen layout (GUI tweak). Note: display-specific — the widget key/output
+# and pixel coords target this laptop's eDP-1; would need adjusting on new hardware.
 [lockscreen_widgets]
 enabled = false
+schema_version = 2
+widget_order = [ "lockscreen-login-box@eDP-1" ]
+
+[lockscreen_widgets.grid]
+cell_size = 16
+major_interval = 4
+visible = true
+
+[lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
+box_height = 70.0
+box_width = 400.0
+cx = 960.0
+cy = 1161.0
+output = "eDP-1"
+rotation = 0.0
+type = "login_box"
+
+[lockscreen_widgets.widget."lockscreen-login-box@eDP-1".settings]
+background_color = "surface_variant"
+background_opacity = 0.88
+background_radius = 12.0
+input_opacity = 1.0
+input_radius = 6.0
+show_caps_lock = true
+show_keyboard_layout = true
+show_login_button = true
+show_password_hint = true
 
 # Disk sysmon widget (v4 SystemMonitor showed CPU usage/temp + disk)
 [widget.disk]
@@ -93,9 +122,17 @@ timeout = 1800.0
 # --- Wallpaper (v4: ~/Pictures/Wallpapers, random 300s, automation off) ---
 [wallpaper]
 enabled = true
-directory = "/home/davidm/Pictures/Wallpapers"
+directory = "{{ .chezmoi.homeDir }}/Pictures/Wallpapers"
 
 [wallpaper.automation]
 enabled = false
 interval_seconds = 300
 order = "random"
+
+# Selected wallpaper (GUI tweak). The image itself is tracked under
+# ~/Pictures/Wallpapers/ so a fresh machine has it.
+[wallpaper.default]
+path = "{{ .chezmoi.homeDir }}/Pictures/Wallpapers/wallhaven_ymg1o7.jpg"
+
+[wallpaper.monitors.eDP-1]
+path = "{{ .chezmoi.homeDir }}/Pictures/Wallpapers/wallhaven_ymg1o7.jpg"
