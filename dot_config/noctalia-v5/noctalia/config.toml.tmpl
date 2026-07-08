@@ -94,9 +94,15 @@ show_password_hint = true
 type = "sysmon"
 stat = "disk_pct"
 
-# --- Weather: enabled, Fahrenheit, auto-locate (v4) ---
+# --- Weather: enabled, Fahrenheit, fixed location for privacy ---
+# auto_locate=false disables IP-based geolocation. Fixed coordinates are used
+# directly (no `address`, so no geocoding lookup either). Coords come from the
+# location_* prompts in .chezmoi.toml.tmpl.
 [location]
-auto_locate = true
+# Location: {{ .location_display_name }}
+auto_locate = false
+latitude = {{ .location_latitude }}
+longitude = {{ .location_longitude }}
 
 [weather]
 enabled = true
