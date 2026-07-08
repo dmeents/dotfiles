@@ -1,0 +1,82 @@
+# ~/.fish_profile — personal fish customizations, sourced by the CachyOS fish
+# base config. Managed by chezmoi.
+#
+# Fish provides autosuggestions, syntax highlighting, and smart history NATIVELY
+# (no plugins — this is what the old zsh setup needed 3 plugins for). The CachyOS
+# base config already provides: eza `ls`/`la`/`ll`, `..`/`...` navigation, grep
+# colors, and the `update`/`fixpacman`/`apt`/`please` aliases. Only personal
+# deltas that neither fish nor the spin already cover live here.
+
+# --- Prompt -----------------------------------------------------------------
+# Starship replaces the old zsh powerlevel10k prompt (shell-agnostic, no p10k).
+if type -q starship
+    starship init fish | source
+end
+
+# --- fzf --------------------------------------------------------------------
+# Ctrl-R history search, Ctrl-T file search, Alt-C cd, plus completions.
+if type -q fzf
+    fzf --fish | source
+end
+
+# --- command-not-found (pkgfile) --------------------------------------------
+if test -f /usr/share/doc/pkgfile/command-not-found.fish
+    source /usr/share/doc/pkgfile/command-not-found.fish
+end
+
+# --- Parallel build wrappers (were `make`/`ninja` aliases in zsh) -----------
+# `command` prevents the function from recursing into itself.
+function make --wraps make --description 'make with all cores'
+    command make -j(nproc) $argv
+end
+function ninja --wraps ninja --description 'ninja with all cores'
+    command ninja -j(nproc) $argv
+end
+
+# --- Abbreviations (expand inline when you hit space — nicer than aliases) ---
+abbr -a n ninja
+abbr -a c clear
+abbr -a rmpkg 'sudo pacman -Rsn'
+abbr -a cleanch 'sudo pacman -Scc'
+abbr -a cleanup 'sudo pacman -Rsn (pacman -Qtdq)'
+abbr -a jctl 'journalctl -p 3 -xb'
+abbr -a tb 'nc termbin.com 9999'
+abbr -a rip "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+
+# --- extract (replaces the zsh extract function) ----------------------------
+function extract --description 'Extract common archive formats'
+    for file in $argv
+        if not test -f $file
+            echo "extract: '$file' is not a valid file"
+            continue
+        end
+        switch $file
+            case '*.tar.bz2' '*.tbz2'; tar xjf $file
+            case '*.tar.gz' '*.tgz';   tar xzf $file
+            case '*.tar.xz' '*.txz';   tar xJf $file
+            case '*.tar.zst';          tar --zstd -xf $file
+            case '*.tar';              tar xf $file
+            case '*.bz2';              bunzip2 $file
+            case '*.gz';               gunzip $file
+            case '*.xz';               unxz $file
+            case '*.zst';              unzstd $file
+            case '*.zip';              unzip $file
+            case '*.rar';              unrar x $file
+            case '*.7z';               7z x $file
+            case '*';                  echo "extract: don't know how to extract '$file'"
+        end
+    end
+end
+
+# --- Secrets (optional) -----------------------------------------------------
+# Source every ~/.secrets/*.env file (bash-style `export KEY=value`). Not
+# tracked in git/chezmoi; drop a new *.env in and it loads on the next shell.
+if test -d ~/.secrets
+    for envfile in ~/.secrets/*.env
+        test -f $envfile; or continue
+        for line in (cat $envfile)
+            string match -qr '^\s*(#|$)' -- $line; and continue
+            set -gx (string split -m1 '=' -- (string replace -r '^\s*export\s+' '' -- $line))
+        end
+    end
+end

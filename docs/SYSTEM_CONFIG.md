@@ -37,6 +37,8 @@ cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 ```
 
 ### Related Hyprland Configuration
-See `.config/hypr/config/environment.conf` for gaming-related environment variables.
+Gaming-related environment variables live in the spin-provided Hyprland config at
+`~/.config/hypr/config/environment.lua` (supplied by `cachyos-hypr-noctalia`, not tracked
+in this repo). Edit it live if you need to change them.
 
 **Note:** `ENABLE_LAYER_MESA_ANTI_LAG` is disabled as it can cause stuttering with recent Mesa drivers on AMD GPUs.

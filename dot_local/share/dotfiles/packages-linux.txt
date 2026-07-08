@@ -1,0 +1,65 @@
+# CachyOS package manifest (noctalia / v2) — minimal profile
+# Installed by run_onchange_after_install-packages_linux.sh via shelly.
+# One package per line; # comments and blank lines ignored. Repo+AUR mixed (shelly resolves source).
+#
+# ONLY genuine additions on top of the CachyOS Hyprland-Noctalia spin.
+# Everything the spin installs by default (base system, kernel, desktop stack via
+# cachyos-hypr-noctalia, networking/audio/bluetooth, filesystem tools) is intentionally
+# omitted — it is already present on any Noctalia-spin install.
+
+adobe-source-han-sans-cn-fonts
+adobe-source-han-sans-jp-fonts
+adobe-source-han-sans-kr-fonts
+age
+ansible
+ansible-lint
+beeper-v4-bin
+cachyos-gaming-meta
+chezmoi
+chromium
+claude-code
+cups
+dart-sass
+dbeaver
+discord
+file-roller
+firefox
+fuse2
+ghostty
+github-cli
+gitkraken
+gnome-keyring
+kleopatra
+logseq-desktop
+meld
+millennium
+mold
+noto-color-emoji-fontconfig
+opendesktop-fonts
+otf-monaspace-nerd
+pnpm
+proton-mail-bin
+proton-vpn-gtk-app
+python-httpx
+python-pip
+python-pipx
+python-uv
+rtkit
+ruby
+rustup
+sassc
+socat
+solaar
+sops
+starship
+steam
+ttf-jetbrains-mono
+ttf-jetbrains-mono-nerd
+typescript
+vlc
+watchexec
+yt-dlp
+zed
+zellij
+zen-browser-bin
+zoom

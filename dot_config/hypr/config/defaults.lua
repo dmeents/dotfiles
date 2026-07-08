@@ -1,9 +1,7 @@
-return {
-  fileManager = "nemo",
-  appLauncher = "vicinae",
-  terminal    = "warp-terminal",
-  wallpapers  = "hyprpaper",
-  idleHandler = "hypridle",
-  capturing   = "hyprshot",
-  lock        = "hyprlock",
-}
+-- Hyprland default apps
+
+TERMINAL     = "ghostty"
+FILE_MANAGER = "dolphin"
+BROWSER      = "zen-browser"
+EDITOR       = "gnome-text-editor --new-window"
+CALCULATOR   = "gnome-calculator"

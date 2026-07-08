@@ -1,0 +1,21 @@
+[DetailsMode]
+PreviewSize=22
+
+[General]
+AlwaysShowTabBar=true
+GlobalViewProps=false
+Version=202
+ViewPropsTimestamp=2026,6,29,23,20,0.523
+
+[KFileDialog Settings]
+Places Icons Auto-resize=false
+Places Icons Static Size=22
+
+[MainWindow]
+MenuBar=Disabled
+
+[PreviewSettings]
+Plugins=ffmpegthumbnailer,appimagethumbnail,audiothumbnail,glycin-heif,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,directorythumbnail,imagethumbnail,glycin-image-rs,jpegthumbnail,glycin-jxl,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,opendocumentthumbnail,glycin-svg,svgthumbnail,gsf-office
+
+[UiSettings]
+ColorScheme=Noctalia

@@ -1,41 +1,7 @@
-{{- if eq .chezmoi.os "darwin" }}
-# Linux-only window manager and desktop environment configs
-.config/hypr/
-.config/waybar/
-.config/wlogout/
-.config/gtk-3.0/
-.config/gtk-4.0/
-.config/xdg-desktop-portal/
-
-# Linux-only applications
-.config/octopi/
-.config/qt5ct/
-.config/vicinae/
-
-# Linux-only hardware configs
-.config/solaar/
-
-# Linux-only systemd services
-.config/systemd/
-
-# Linux-only installation scripts (target filenames without run_once_before_)
-00-system-update_linux.sh
-*_linux.sh
-enable-systemd-services.sh
-set-default-terminal_linux.sh
-
-{{- else if eq .chezmoi.os "linux" }}
-# macOS-only window managers and menu bars
-.config/aerospace/
-.config/sketchybar/
-
-# macOS-only LaunchAgents
-Library/
-
-# macOS-only installation scripts (target filenames without run_once_before_)
-*_darwin.sh
-
-{{- end }}
+# Repo documentation / meta — not dotfiles, must not land in $HOME
+README.md
+CLAUDE.md
+docs/
 
 # Never track secrets directory
 .secrets/
@@ -44,6 +10,4 @@ Library/
 # If `chezmoi add` ever sweeps these up again, do not apply them.
 **/*_preferences.json
 **/private_*.json
-.config/warp-terminal/user_preferences.json
-.config/warp-terminal/rules/system_info.md
 .config/systemd/user/solaar/config.yaml
