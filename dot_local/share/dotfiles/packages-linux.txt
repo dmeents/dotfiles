@@ -30,6 +30,7 @@ gitkraken
 gnome-keyring
 kleopatra
 logseq-desktop
+millennium
 mold
 noto-color-emoji-fontconfig
 opendesktop-fonts

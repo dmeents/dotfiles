@@ -67,6 +67,14 @@ if ((${#repo[@]})); then
     fi
 fi
 
+# Rust-based AUR packages (e.g. millennium) build via Corrosion/CMake, which
+# needs a *default* rustup toolchain. The `rustup` package installs without
+# selecting one, so its first build fails with "Could not find toolchain ''"
+# AND caches that empty value, poisoning every retry. Set the default up front.
+if ((${#aur[@]})) && command -v rustup >/dev/null 2>&1; then
+    rustup default stable >/dev/null 2>&1 || true
+fi
+
 # AUR packages: must use `shelly aur install`; per-package fallback on failure.
 if ((${#aur[@]})); then
     echo "==> Installing ${#aur[@]} AUR package(s) via 'shelly aur install'..."

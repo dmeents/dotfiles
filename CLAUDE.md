@@ -60,12 +60,36 @@ Hyprland config (`~/.config/hypr/*.lua`), kitty, GTK/Qt theming, and portals com
 - `dot_config/hypr/config/{autostart,keybinds}.lua.tmpl` — Noctalia v5 autostart + IPC keybinds (home paths templated with `{{ .chezmoi.homeDir }}`).
 - `dot_config/zed/` — Zed editor (settings, keymap, themes).
 - `dot_config/dxvk.conf` — gaming (DXVK) tweaks.
+- `dot_config/millennium/create_config.json` — seeds Millennium's config (active theme = Material-Theme, Source color = Matugen, plus theme tweaks). `create_` so Millennium owns it afterwards. See "Steam theming" below.
 - `dot_config/systemd/user/` — a Hyprland uwsm service-timeout override.
 - `dot_zshrc`, `dot_bashrc`, `dot_gitconfig`, `dot_p10k.zsh`, `dot_abcde.conf` — shell/tool configs (static; no macOS branches).
 
 ### Shell
 
 `dot_zshrc` is static (Linux-only): system-wide powerlevel10k + zsh plugins from `/usr/share/zsh/plugins/`, pacman maintenance aliases, fzf and nvm from `/usr/share`. Secrets are sourced from `~/.secrets/github.env` if present (gitignored).
+
+### Steam theming (Noctalia palette -> Steam UI)
+
+Steam's client UI is recolored to match the Noctalia palette via the **Millennium**
+loader (in `packages-linux.txt`) + the **kuska1/Material-Theme** skin. Three parts
+must agree, wired up by `run_onchange_after_install-steam-material-theme.sh`:
+
+- **Theme location**: Millennium v3 scans `~/.local/share/Steam/millennium/themes/`
+  (NOT the legacy `steamui/skins/`). The script installs the pinned theme there.
+- **Noctalia bridge**: the Noctalia community "steam" template (enabled via
+  `templates.toml` `community_ids`) writes its generated palette to the legacy
+  `~/.steam/steam/steamui/skins/Material-Theme/.../matugen.css`. The script
+  symlinks that legacy dir to the real theme so live recolor keeps working
+  without patching the app-fetched template.
+- **`~/.steam/steam` must be a symlink** to `~/.local/share/Steam`. If Noctalia
+  paints before Steam's first launch, its `mkdir -p` turns that path into a real
+  directory and Steam dies with "Couldn't set up Steam data". The script
+  pre-creates the symlink to prevent this.
+
+Build gotcha: Millennium is a Rust AUR build. `rustup` installs with no default
+toolchain, so its first build fails ("Could not find toolchain ''") and caches
+the empty value. The package-install script runs `rustup default stable` before
+the AUR batch to avoid this.
 
 ### Config generation
 
