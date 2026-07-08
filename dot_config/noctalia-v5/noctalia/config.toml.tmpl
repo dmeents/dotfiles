@@ -5,8 +5,12 @@
 
 [theme]
 mode = "dark"
-source = "community"
-community_palette = "Oxide"
+# Custom palette read directly from palettes/Oxide.json in the config home — no
+# runtime fetch/registration, so it's present the moment chezmoi applies. (Was
+# briefly source="community"; that depends on Noctalia fetching the palette on
+# first run, which isn't guaranteed on a fresh machine.)
+source = "custom"
+custom_palette = "Oxide"
 
 [shell]
 avatar_path = "{{ .chezmoi.homeDir }}/Pictures/profile-pic5.jpg"
