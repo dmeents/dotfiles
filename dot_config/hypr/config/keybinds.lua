@@ -1,7 +1,6 @@
 local mainMod = "SUPER"
--- Noctalia v5 (beta) IPC. Inline env keeps `noctalia msg` pointed at the isolated
--- v5 config/state home regardless of session env propagation.
--- v4 fallback was: local noctCall = "qs -c noctalia-shell ipc call "
+-- Noctalia IPC. Inline env keeps `noctalia msg` pointed at the isolated
+-- config/state home regardless of session env propagation.
 local noctMsg = "env NOCTALIA_CONFIG_HOME=/home/davidm/.config/noctalia-v5 NOCTALIA_STATE_HOME=/home/davidm/.local/state/noctalia-v5 noctalia msg "
 local launchPrefix = "uwsm app -- " -- if you are not using UWSM, make this empty (e.g. "")
 

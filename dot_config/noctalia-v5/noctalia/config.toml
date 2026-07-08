@@ -28,6 +28,23 @@ auto_hide = false
 start = [ "workspaces", "cpu", "temp", "disk", "active_window" ]
 center = [ "clock", "media" ]
 end = [ "tray", "notifications", "battery", "control-center" ]
+# Styling tuned in the v5 GUI, folded back from state settings.toml.
+contact_shadow = true
+padding = 16
+scale = 1.05
+margin_edge = 0
+margin_ends = 0
+
+# Launcher opens attached to the bar (GUI tweak).
+[shell.panel]
+launcher_placement = "attached"
+
+# Desktop + lockscreen widget layers off (GUI tweak); positions stay in state.
+[desktop_widgets]
+enabled = false
+
+[lockscreen_widgets]
+enabled = false
 
 # Disk sysmon widget (v4 SystemMonitor showed CPU usage/temp + disk)
 [widget.disk]

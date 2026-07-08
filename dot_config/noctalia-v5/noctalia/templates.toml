@@ -1,16 +1,17 @@
 # App-theming templates. Built-in templates recolor apps on every palette change.
 # Managed by chezmoi.
 #
-# v4 theming covered: zenBrowser, kitty, gtk, qt, kcolorscheme, btop, hyprland,
-# zed, steam, discord, alacritty, ghostty.
 # v5 built-ins cover: kitty, ghostty, alacritty, gtk3, gtk4, qt, kcolorscheme, btop.
-# NO v5 built-in for: zed, steam, discord, zenBrowser  -> tracked as gaps.
-# hyprland built-in is intentionally DEFERRED during v4/v5 coexistence (it would
-# add its own include to ~/.config/hypr; v4 already themes borders with Oxide).
+# zed + steam have no v5 built-in -> supplied via community templates, seeded under
+#   ~/.local/state/noctalia-v5/noctalia/community-templates/ (tracked with create_).
+# Still no built-in or community template for: discord, zenBrowser -> tracked as gaps.
+# hyprland built-in stays DISABLED: enabling it makes Noctalia write its own
+#   ~/.config/hypr/noctalia.lua include. Add "hyprland" to builtin_ids only if you
+#   want Noctalia to own the Hyprland border colors.
 
 [theme.templates]
 enable_builtin_templates = true
-enable_community_templates = false
+enable_community_templates = true
 builtin_ids = [
     "kitty",
     "ghostty",
@@ -21,7 +22,7 @@ builtin_ids = [
     "kcolorscheme",
     "btop",
 ]
-community_ids = []
+community_ids = [ "zed", "steam" ]
 
 # Custom user template: recolor the Beeper desktop app (ported from v4).
 [theme.templates.user.beeper]
