@@ -30,14 +30,28 @@ center = [ "clock", "media" ]
 end = [ "tray", "notifications", "battery", "control-center" ]
 # Styling tuned in the v5 GUI, folded back from state settings.toml.
 contact_shadow = true
-padding = 16
-scale = 1.05
+padding = 11
+scale = 1.2
+thickness = 41
+widget_spacing = 9
 margin_edge = 0
 margin_ends = 0
 
-# Launcher opens attached to the bar (GUI tweak).
+# Panel/launcher behaviour (GUI tweaks).
 [shell.panel]
 launcher_placement = "attached"
+transparency_mode = "glass"
+
+[shell.launcher]
+session_search = true
+
+# Control center width (GUI tweak).
+[control_center]
+width = 900
+
+# Tray uses a drawer (GUI tweak).
+[widget.tray]
+drawer = true
 
 # Desktop + lockscreen widget layers off (GUI tweak); positions stay in state.
 [desktop_widgets]
