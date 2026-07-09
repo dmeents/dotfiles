@@ -36,6 +36,32 @@ hl.bind(mainMod .. " + CONTROL + SHIFT + Left",  hl.dsp.window.move({ workspace 
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag())
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize())
 
+-- Resize submap: SUPER + R enters resize mode; arrow keys / hjkl resize the
+-- active window (15px steps); Escape exits. (Ported from the v4 config.)
+hl.define_submap("resize", function()
+  local steps = {
+    { "right", 15,   0   },
+    { "left",  -15,  0   },
+    { "up",    0,    -15 },
+    { "down",  0,    15  },
+    { "l",     15,   0   },
+    { "h",     -15,  0   },
+    { "k",     0,    -15 },
+    { "j",     0,    15  },
+  }
+  for _, s in ipairs(steps) do
+    hl.bind(s[1],
+      hl.dsp.window.resize({ x = s[2], y = s[3], relative = true }),
+      { repeating = true, description = "Resize active window (" .. s[1] .. ")" })
+  end
+
+  hl.bind("escape", hl.dsp.submap("reset"),
+    { description = "Exit resize mode" })
+end)
+
+hl.bind(mainMod .. " + R", hl.dsp.submap("resize"),
+  { description = "Enter window-resize mode" })
+
 ------------------
 ---- LAUNCHER ----
 ------------------
@@ -55,9 +81,11 @@ hl.bind(mainMod .. " + period",     hl.dsp.exec_cmd(noctMsg .. "panel-toggle lau
 ---- HARDWARE CONTROLS ----
 ---------------------------
 
--- Audio
+-- Audio (Prior = PageUp, Next = PageDown)
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(noctMsg .. "volume-up"),   { locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(noctMsg .. "volume-down"), { locked = true, repeating = true })
+hl.bind(mainMod .. " + Prior",  hl.dsp.exec_cmd(noctMsg .. "volume-up"),   { locked = true, repeating = true })
+hl.bind(mainMod .. " + Next",   hl.dsp.exec_cmd(noctMsg .. "volume-down"), { locked = true, repeating = true })
 hl.bind("XF86AudioMute",        hl.dsp.exec_cmd(noctMsg .. "volume-mute"), { locked = true, repeating = true })
 hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd(noctMsg .. "mic-mute"),    { locked = true, repeating = true })
 
@@ -81,10 +109,11 @@ hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd(noctMsg .. "screenshot-region"))
 -- v4 screen-toolkit parity gaps in v5 (no built-in / no official plugin yet):
 --   * color picker (was Super+P): unbound. Fallback: bind an external tool (e.g. hyprpicker).
 --   * annotation / OCR: no v5 equivalent.
---   * screen recording (was Super+R): enable the official "screen_recorder" plugin, then
---     bind via `noctalia msg plugin <author/plugin:entry> <target> <event>` per its docs.
+--   * screen recording (was Super+R, now the resize submap): enable the official
+--     "screen_recorder" plugin, then bind an unused key via
+--     `noctalia msg plugin <author/plugin:entry> <target> <event>` per its docs.
 -- hl.bind(mainMod .. " + P",     hl.dsp.exec_cmd("hyprpicker -a"))
--- hl.bind(mainMod .. " + R",     hl.dsp.exec_cmd(noctMsg .. "plugin noctalia/screen_recorder:... ..."))
+-- hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd(noctMsg .. "plugin noctalia/screen_recorder:... ..."))
 
 -- Theming and Wallpaper
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(noctMsg .. "panel-toggle wallpaper"))
