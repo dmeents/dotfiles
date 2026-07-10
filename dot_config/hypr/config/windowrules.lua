@@ -123,6 +123,16 @@ hl.window_rule({
 -- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 -- ┃   Personal overrides (not from the spin)                    ┃
 -- ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+-- Workspace 2 → master layout, main window right-aligned (ported from the v4
+-- config's monitor.lua workspace_rule). The rest of the desktop keeps the spin's
+-- dwindle default; only ws2 switches to master, so it always has one big "main"
+-- window on the RIGHT with any secondary windows tiling down the left — normal
+-- tiling, just one wide primary. `master.mfact` sets the main window's width
+-- fraction; the spin only configures dwindle, so setting master here is additive.
+-- Uses the v4 value mfact = 0.75 (main window = 75% of the workspace width).
+hl.config({ master = { new_status = "master", mfact = 0.75, special_scale_factor = 0.8 } })
+hl.workspace_rule({ workspace = "2", layout = "master", layout_opts = { orientation = "right" } })
+
 -- Path of Exile 2 → workspace 2, fake-fullscreen.
 -- Ported from the retired v4 config. The spin's Gaming section above routes any
 -- steam_app.* to the named "gaming" workspace and fullscreens it; these rules run
