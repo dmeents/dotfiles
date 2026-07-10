@@ -60,7 +60,8 @@ Hyprland config (`~/.config/hypr/*.lua`), kitty, GTK/Qt theming, and portals com
 - `dot_config/hypr/config/{autostart,keybinds}.lua.tmpl` — Noctalia v5 autostart + IPC keybinds (home paths templated with `{{ .chezmoi.homeDir }}`).
 - `dot_config/hypr/config/windowrules.lua` — wholesale override of the spin's window rules (the loader `hyprland.lua` uses a fixed `require` list, so a tracked file must replace, not supplement). The body is the spin's file verbatim; the only local addition is the "Personal overrides" block at the end pinning **Path of Exile 2 to workspace 2** with fake-fullscreen (`fullscreen_state = "0 2"`), placed after the spin's Gaming section so it wins. When resyncing the spin, re-copy its `windowrules.lua` and re-append that block.
 - `dot_config/zed/` — Zed editor (settings, keymap, themes).
-- `dot_config/dxvk.conf` — gaming (DXVK) tweaks.
+- `dot_config/dxvk.conf` — gaming (DXVK) tweaks (input latency, VSync, GPL). Only read because `dot_config/environment.d/gaming.conf` sets `DXVK_CONFIG_FILE` to it; DXVK otherwise auto-loads only a `dxvk.conf` in the game's CWD.
+- `dot_config/environment.d/gaming.conf` — GPU/gaming session env vars (`DXVK_CONFIG_FILE`, `DXVK_STATE_CACHE_PATH`, `AMD_VULKAN_ICD=RADV`, `VKD3D_CONFIG`). Imported by systemd into the uwsm session and pushed to the activation env by `autostart.lua`, so games launched from Hyprland inherit them. Obsolete knobs from the old pre-v5 `environment.conf` (`RADV_PERFTEST`, `DXVK_ASYNC`, `WINE_CPU_TOPOLOGY`) are deliberately omitted — see the file's comments.
 - `dot_config/millennium/create_config.json` — seeds Millennium's config (active theme = Material-Theme, Source color = Matugen, plus theme tweaks). `create_` so Millennium owns it afterwards. See "Steam theming" below.
 - `dot_config/systemd/user/` — a Hyprland uwsm service-timeout override.
 - `dot_zshrc`, `dot_bashrc`, `dot_gitconfig`, `dot_p10k.zsh`, `dot_abcde.conf` — shell/tool configs (static; no macOS branches).
@@ -104,4 +105,4 @@ the AUR batch to avoid this.
 ## Hardware Context
 
 - AMD Ryzen 9 7950X3D, 128GB RAM, AMD Radeon RX 7900 XT.
-- AMD GPU drivers + ROCm are in the package manifest; gaming env vars live in the spin's Hyprland config.
+- AMD GPU drivers + ROCm come via `cachyos-gaming-meta` in the package manifest; gaming/GPU env vars live in `dot_config/environment.d/gaming.conf` (DXVK/RADV/VKD3D), not the spin's Hyprland config.
