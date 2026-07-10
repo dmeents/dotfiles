@@ -104,8 +104,8 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctMsg .. "brightness-down"), 
 -------------------
 
 -- Screen Capture (v5 built-in screenshots replace the v4 screen-toolkit plugin)
-hl.bind("Print",               hl.dsp.exec_cmd(noctMsg .. "screenshot-fullscreen"))
-hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd(noctMsg .. "screenshot-region"))
+hl.bind("Print",               hl.dsp.exec_cmd(noctMsg .. "screenshot-region"))
+hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd(noctMsg .. "screenshot-fullscreen"))
 -- v4 screen-toolkit parity gaps in v5 (no built-in / no official plugin yet):
 --   * color picker (was Super+P): unbound. Fallback: bind an external tool (e.g. hyprpicker).
 --   * annotation / OCR: no v5 equivalent.
