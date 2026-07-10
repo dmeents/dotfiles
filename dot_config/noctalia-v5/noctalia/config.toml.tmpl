@@ -13,7 +13,8 @@ source = "custom"
 custom_palette = "Oxide"
 
 [shell]
-avatar_path = "{{ .chezmoi.homeDir }}/Pictures/profile-pic5.jpg"
+avatar_path = "{{ .chezmoi.homeDir }}/Pictures/Profile Pictures/profile-pic5.jpg"
+settings_show_advanced = true
 font_family = "DejaVu LGC Sans"
 # 12-hour clock (v4 used h:mm AP)
 time_format = "{:%I:%M %p}"
@@ -29,9 +30,11 @@ setup_wizard_enabled = false
 [bar.default]
 position = "top"
 auto_hide = false
-start = [ "workspaces", "cpu", "temp", "disk", "active_window" ]
-center = [ "clock", "media" ]
-end = [ "tray", "notifications", "battery", "control-center" ]
+start = [ "workspaces", "group:g1" ]
+center = [ "clock" ]
+end = [ "media", "tray", "group:g2" ]
+capsule = true
+font_family = "JetBrainsMono Nerd Font"
 # Styling tuned in the v5 GUI, folded back from state settings.toml.
 contact_shadow = true
 padding = 11
@@ -40,6 +43,24 @@ thickness = 41
 widget_spacing = 9
 margin_edge = 0
 margin_ends = 0
+
+# Capsule groups (GUI tweak): pill-grouped widget clusters referenced as
+# "group:<id>" in the start/end lists above. g1 = system monitors, g2 =
+# notifications/control-center/battery. NOTE: the array-of-tables must stay
+# below all bare [bar.default] keys (TOML requires it).
+[[bar.default.capsule_group]]
+id = "g1"
+members = [ "cpu", "ram", "temp" ]
+fill = "surface_variant"
+opacity = 1.0
+padding = 6.0
+
+[[bar.default.capsule_group]]
+id = "g2"
+members = [ "notifications", "control-center", "battery" ]
+fill = "surface_variant"
+opacity = 1.0
+padding = 6.0
 
 # Panel/launcher behaviour (GUI tweaks).
 [shell.panel]
@@ -93,24 +114,19 @@ show_keyboard_layout = true
 show_login_button = true
 show_password_hint = true
 
-# Disk sysmon widget (v4 SystemMonitor showed CPU usage/temp + disk)
-[widget.disk]
-type = "sysmon"
-stat = "disk_pct"
-
-# --- Weather: enabled, Fahrenheit, fixed location for privacy ---
-# auto_locate=false disables IP-based geolocation. Fixed coordinates are used
-# directly (no `address`, so no geocoding lookup either). Coords come from the
-# location_* prompts in .chezmoi.toml.tmpl.
+# --- Weather: enabled, Celsius, IP-based auto-location ---
+# auto_locate=true uses IP-based geolocation (folded back from the v5 GUI). The
+# fixed coordinates below are kept as a fallback (used only if auto_locate is
+# turned back off); they come from the location_* prompts in .chezmoi.toml.tmpl.
 [location]
-# Location: {{ .location_display_name }}
-auto_locate = false
+# Location fallback: {{ .location_display_name }}
+auto_locate = true
 latitude = {{ .location_latitude }}
 longitude = {{ .location_longitude }}
 
 [weather]
 enabled = true
-unit = "imperial"
+unit = "metric"
 
 # --- Idle/lock (v4: lock 600s, screen-off 300s, suspend 1800s) ---
 # `action` must be set explicitly; a partial table does not inherit the default.
