@@ -12,6 +12,15 @@ Source directory: `~/.local/share/chezmoi` — all edits happen here, never in `
 
 The CachyOS Noctalia spin already provides the entire desktop (Hyprland config, Noctalia shell, GTK/Qt theming, kitty, portals, base system) via the `cachyos-hypr-noctalia` meta-package and `/etc/skel`. **Do not track anything the spin provides by default.** Only genuine additions (extra apps, personal tweaks) belong here.
 
+## System-level config: codify vs document
+
+Chezmoi's managed-file model targets `$HOME` applied as your unprivileged user, so `/etc` and other root-owned files can't be tracked as ordinary `dot_` files. But that does **not** mean root/system config is off-limits — a `run_onchange_after_*` script can shell out to `sudo` and deploy it (the package installer and Steam-theme scripts already do). The real question is not "who owns the file" but **whether the change is safe to reassert unattended**:
+
+- **Codify** it as a `run_onchange_after_*` script when the change is file-based, idempotent, and safe to re-run without a human watching (e.g. dropping a udev rule and reloading udev). The script embeds the file content, so it stays version-controlled and reproducible on a fresh install.
+- **Document** it in `docs/SYSTEM_CONFIG.md` when it is interactive/one-time (firmware, UEFI, disk layout), non-idempotent or risky to blindly re-run, or owned by tooling you shouldn't fight (something CachyOS already manages).
+
+Before codifying anything system-level, verify the *actual* current state (`systemctl is-enabled`, read the live sysfs/`/etc` value) — codify reality, not what a doc claims. Privileged run scripts execute as root on every apply, so keep them few and idempotent; don't automate marginal one-offs.
+
 ## Chezmoi Conventions
 
 - `dot_` prefix → dotfile (`dot_zshrc` → `~/.zshrc`, `dot_config/` → `~/.config/`)
@@ -65,6 +74,7 @@ Hyprland config (`~/.config/hypr/*.lua`), kitty, GTK/Qt theming, and portals com
 - `dot_config/millennium/create_config.json` — seeds Millennium's config (active theme = Material-Theme, Source color = Matugen, plus theme tweaks). `create_` so Millennium owns it afterwards. See "Steam theming" below.
 - `dot_config/systemd/user/` — a Hyprland uwsm service-timeout override.
 - `dot_fish_profile`, `dot_bashrc`, `dot_gitconfig`, `dot_config/starship.toml`, `dot_abcde.conf` — shell/tool configs (static; Linux-only).
+- `run_onchange_after_install-usb-wake-rule.sh` — codified system-level fix: installs `/etc/udev/rules.d/50-usb-keyboard-wake.rules` (via sudo) arming USB remote-wakeup on the `0424:4206` USB4206 hub chain the keyboard hangs off, so a keypress wakes the box from deep sleep. The keyboard and xHCI controller are armed by default but the intermediate hubs aren't, which breaks wake-signal propagation. Matches product `4206` only, to avoid arming the sibling USB7206 hub (`0424:7206`, the 2.5G LAN) for wake-on-LAN.
 
 ### Shell
 
@@ -100,7 +110,7 @@ the AUR batch to avoid this.
 ## Docs
 
 - `docs/LINUX_SETUP.md` — setup and maintenance guide.
-- `docs/SYSTEM_CONFIG.md` — root-level configs chezmoi can't manage (gaming CPU governor).
+- `docs/SYSTEM_CONFIG.md` — system-level config kept as docs rather than codified (see "System-level config: codify vs document" above), plus notes on state that drifted from what was documented.
 
 ## Hardware Context
 
