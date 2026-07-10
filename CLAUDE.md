@@ -64,11 +64,11 @@ Hyprland config (`~/.config/hypr/*.lua`), kitty, GTK/Qt theming, and portals com
 - `dot_config/environment.d/gaming.conf` — GPU/gaming session env vars (`DXVK_CONFIG_FILE`, `DXVK_STATE_CACHE_PATH`, `AMD_VULKAN_ICD=RADV`, `VKD3D_CONFIG`). Imported by systemd into the uwsm session and pushed to the activation env by `autostart.lua`, so games launched from Hyprland inherit them. Obsolete knobs from the old pre-v5 `environment.conf` (`RADV_PERFTEST`, `DXVK_ASYNC`, `WINE_CPU_TOPOLOGY`) are deliberately omitted — see the file's comments.
 - `dot_config/millennium/create_config.json` — seeds Millennium's config (active theme = Material-Theme, Source color = Matugen, plus theme tweaks). `create_` so Millennium owns it afterwards. See "Steam theming" below.
 - `dot_config/systemd/user/` — a Hyprland uwsm service-timeout override.
-- `dot_zshrc`, `dot_bashrc`, `dot_gitconfig`, `dot_p10k.zsh`, `dot_abcde.conf` — shell/tool configs (static; no macOS branches).
+- `dot_fish_profile`, `dot_bashrc`, `dot_gitconfig`, `dot_config/starship.toml`, `dot_abcde.conf` — shell/tool configs (static; Linux-only).
 
 ### Shell
 
-`dot_zshrc` is static (Linux-only): system-wide powerlevel10k + zsh plugins from `/usr/share/zsh/plugins/`, pacman maintenance aliases, fzf and nvm from `/usr/share`. Secrets are sourced from `~/.secrets/github.env` if present (gitignored).
+Fish is the interactive shell. `dot_fish_profile` (`~/.fish_profile`) layers personal deltas on top of the CachyOS fish base config — it only adds what neither fish nor the spin already provide: the Starship prompt init, fzf keybindings, pkgfile command-not-found, `make`/`ninja` all-core wrappers, pacman abbreviations, and an `extract` function. Starship (`dot_config/starship.toml`) replaces the old zsh + powerlevel10k prompt, which has been retired. Secrets are sourced from every `~/.secrets/*.env` file if present (gitignored).
 
 ### Steam theming (Noctalia palette -> Steam UI)
 

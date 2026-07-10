@@ -17,10 +17,11 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/YOUR_USE
 ## 📋 What's Included
 
 - **Packages** — additions on top of the spin, listed in `dot_local/share/dotfiles/packages-linux.txt` and installed via **shelly** (the spin's package manager; never pacman/paru).
-- **Shell** — Zsh with Powerlevel10k, system-wide plugins, maintenance aliases.
+- **Shell** — Fish as the interactive shell (`~/.fish_profile` layered on the CachyOS fish base config) with a Starship prompt; Bash kept for scripting. Secrets are sourced from `~/.secrets/*.env` if present.
 - **Editor** — Zed (settings, keymap, themes).
-- **Noctalia** — the shell's `settings.json` is *seeded once* (`create_`), then owned by Noctalia at runtime.
-- **Misc** — DXVK gaming config, a Hyprland uwsm service override, git/bash configs.
+- **Noctalia v5** — the desktop shell. Hand-written `config.toml` (theme, bar, idle, weather, wallpaper, lockscreen) plus custom palettes and user templates, under an isolated config/state home. Runtime GUI tweaks land in the app-owned state file; durable ones are folded back into `config.toml`.
+- **Steam theming** — Steam's UI is recolored to the Noctalia palette via the Millennium loader + Material-Theme skin (seeded config + installer script).
+- **Misc** — DXVK gaming config (wired in via `environment.d/gaming.conf`), a Hyprland uwsm service override, and git/bash/abcde configs.
 
 ## 🗂️ Repository Structure
 
@@ -35,13 +36,16 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/YOUR_USE
 ├── .chezmoi.toml.tmpl                            # Prompts: machine type, weather location
 ├── dot_config/
 │   ├── noctalia-v5/                              # Noctalia v5 config (config.toml, palettes, templates)
-│   ├── hypr/config/                              # Noctalia v5 autostart + keybinds (.lua.tmpl)
-│   ├── zed/                                       # Zed editor
-│   ├── systemd/user/                              # Hyprland uwsm timeout override
-│   └── dxvk.conf
-├── dot_zshrc, dot_bashrc, dot_gitconfig, dot_p10k.zsh, dot_abcde.conf
+│   ├── hypr/config/                              # autostart, keybinds, windowrules, defaults (.lua)
+│   ├── environment.d/                            # session env (Noctalia v5 isolation, DXVK/GPU)
+│   ├── millennium/                               # Steam UI theming seed (create_)
+│   ├── zed/                                      # Zed editor
+│   ├── systemd/user/                             # Hyprland uwsm timeout override
+│   ├── starship.toml                             # prompt
+│   └── dxvk.conf                                 # DXVK gaming tweaks
+├── dot_fish_profile, dot_bashrc, dot_gitconfig, dot_abcde.conf
 ├── dot_local/share/dotfiles/packages-linux.txt   # shelly package manifest
-└── run_onchange_after_install-packages_linux.sh.tmpl
+└── run_onchange_after_install-*.sh(.tmpl)        # package + Steam theming installers
 ```
 
 ## 🛠️ Common Commands
@@ -49,7 +53,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/YOUR_USE
 ```bash
 chezmoi diff        # Preview what would change
 chezmoi apply       # Apply changes (runs shelly install if the manifest changed)
-chezmoi edit ~/.zshrc
+chezmoi edit ~/.fish_profile
 chezmoi status
 shelly upgrade      # Full system upgrade
 ```
