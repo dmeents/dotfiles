@@ -4,6 +4,12 @@
 # flatpak); it is the ONLY installer used on this branch — never pacman/paru.
 # This script re-runs automatically whenever the manifest content changes:
 # manifest sha256: {{ include "dot_local/share/dotfiles/packages-linux.txt" | sha256sum }}
+# ...AND whenever any manifest package is missing from the system, so a failed
+# install (e.g. a transient AUR build failure) self-heals on the next apply
+# instead of staying missing until the manifest text changes. The line below is
+# the space-separated set of currently-absent manifest packages; when it changes
+# (a package appears missing, or a retry succeeds), the script re-runs.
+# missing packages: {{ output "bash" "-c" (printf `for p in $(grep -vE '^[[:space:]]*(#|$)' '%s/dot_local/share/dotfiles/packages-linux.txt'); do command -v pacman >/dev/null 2>&1 && { pacman -Qq -- "$p" >/dev/null 2>&1 || printf '%%s ' "$p"; }; done; true` .chezmoi.sourceDir) | trim }}
 # `shelly install` handles ONLY repo packages/files/URLs — AUR names must go
 # through `shelly aur install`. We classify each manifest entry at runtime and
 # route accordingly, so one AUR name can't abort the whole ALPM transaction.
