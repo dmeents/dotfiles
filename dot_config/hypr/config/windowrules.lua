@@ -145,3 +145,18 @@ hl.window_rule({ name = "tag-poe-class",  tag = "+poe", match = { class = "(stea
 hl.window_rule({ name = "poe-fullscreen", fullscreen_state = "0 2", match = { tag = "poe" } })
 hl.window_rule({ name = "pin-steam-ws2",  workspace = "2 silent", match = { class = "^(steam|Steam)$" } })
 hl.window_rule({ name = "pin-poe-ws2",    workspace = "2 silent", match = { tag = "poe" } })
+
+-- Dolphin (Super+E) → tile inline instead of floating. The spin's rule above
+-- (org.kde.dolphin, negative title filter) floats the main browse window at a
+-- fixed 1300x800 centered on the cursor; this later `tile` rule wins for that
+-- same window, so it joins the tiling layout. The dialog/progress windows are
+-- excluded by the same negative title filter, so they keep the spin's float
+-- behavior. `tile` is the documented counterpart to `float`.
+hl.window_rule({
+    name  = "dolphin-tile-inline",
+    tile  = true,
+    match = {
+        class = "^(org.kde.dolphin)$",
+        title = "negative:^(Moving.*|Create New.*|Extract.*|Compress.*|Copying.*|Progress.*|Configure.*|Properties.*|Choose\\sApplication.*)$",
+    },
+})
