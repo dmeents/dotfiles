@@ -28,8 +28,8 @@
   "autosave": "on_focus_change",
   "format_on_save": "on",
   "theme": {
-    "mode": "dark",
-    "light": "Noctalia Light",
+    "mode": "system",
+    "light": "Noctalia Dark",
     "dark": "Noctalia Dark"
   },
   "tabs": {
@@ -41,6 +41,10 @@
     "liga": true
   },
   "edit_predictions": {
+    "open_ai_compatible_api": {
+      "api_url": ""
+    },
+    "allow_data_collection": "no",
     "mode": "eager",
     "disabled_globs": [".env"]
   },

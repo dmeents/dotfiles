@@ -22,6 +22,7 @@ cups
 dart-sass
 dbeaver
 discord
+docker-desktop
 file-roller
 firefox
 fuse2
