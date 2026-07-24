@@ -30,6 +30,8 @@ ghostty
 github-cli
 gitkraken
 gnome-keyring
+helm
+k3s-bin
 kleopatra
 konsole
 logseq-desktop

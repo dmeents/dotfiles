@@ -73,8 +73,19 @@ Hyprland config (`~/.config/hypr/*.lua`), kitty, GTK/Qt theming, and portals com
 - `dot_config/environment.d/gaming.conf` — GPU/gaming session env vars (`DXVK_CONFIG_FILE`, `DXVK_STATE_CACHE_PATH`, `AMD_VULKAN_ICD=RADV`, `VKD3D_CONFIG`). Imported by systemd into the uwsm session and pushed to the activation env by `autostart.lua`, so games launched from Hyprland inherit them. Obsolete knobs from the old pre-v5 `environment.conf` (`RADV_PERFTEST`, `DXVK_ASYNC`, `WINE_CPU_TOPOLOGY`) are deliberately omitted — see the file's comments.
 - `dot_config/millennium/create_config.json` — seeds Millennium's config (active theme = Material-Theme, Source color = Matugen, plus theme tweaks). `create_` so Millennium owns it afterwards. See "Steam theming" below.
 - `dot_config/systemd/user/` — a Hyprland uwsm service-timeout override.
+- `dot_config/autostart/solaar.desktop` — XDG autostart entry that launches Solaar (Logitech device manager, in the manifest) at login via `solaar --window=hide` (starts hidden to the tray). The spin runs under UWSM, whose `wayland-session-xdg-autostart@hyprland.desktop.target` processes `~/.config/autostart`, so this is the correct autostart path rather than `hypr/config/autostart.lua` (see that file's header comment).
 - `dot_fish_profile`, `dot_bashrc`, `dot_gitconfig`, `dot_config/starship.toml`, `dot_abcde.conf` — shell/tool configs (static; Linux-only).
 - `run_onchange_after_install-usb-wake-rule.sh` — codified system-level fix: installs `/etc/udev/rules.d/50-usb-keyboard-wake.rules` (via sudo) arming USB remote-wakeup on the `0424:4206` USB4206 hub chain the keyboard hangs off, so a keypress wakes the box from deep sleep. The keyboard and xHCI controller are armed by default but the intermediate hubs aren't, which breaks wake-signal propagation. Matches product `4206` only, to avoid arming the sibling USB7206 hub (`0424:7206`, the 2.5G LAN) for wake-on-LAN.
+
+### Kubernetes (k3s) for CI runners
+
+A lean single-node **k3s** cluster on this workstation, the substrate for GitHub Actions self-hosted runners via **Actions Runner Controller (ARC)**. This replaces the retired Docker-Desktop runner setup: k3s runs as a system-level systemd service on its own bundled containerd, so it survives logout and doesn't churn under load the way the session-bound Docker-Desktop pool did. It coexists with Docker Desktop (engine in a VM).
+
+- `k3s-bin` + `helm` (AUR/repo, in the manifest) — the `k3s-bin` package ships only `/usr/bin/k3s` (no `kubectl` symlink like the upstream installer), so the setup script creates the client symlinks. `helm` drives the in-cluster tooling.
+- `run_onchange_after_setup-k3s.sh` — system-level setup: symlinks `kubectl`/`crictl`/`ctr` → `k3s` in `/usr/local/bin` (sudo), writes `/etc/rancher/k3s/config.yaml` (disables Traefik + ServiceLB — nothing here needs them — and sets `write-kubeconfig-mode: 0644`), enables/starts (or restarts, on config change) `k3s.service`, waits for the API, seeds `~/.kube/config` if absent, then installs **Headlamp** (see below) via helm. Sorts after the package installer so k3s + helm are present first.
+- **Headlamp** — lightweight CNCF web dashboard, `helm upgrade --install` into the `headlamp` namespace, plus a `headlamp-admin` cluster-admin ServiceAccount for token login. Chosen over Rancher: Rancher caps at k8s 1.35 (this cluster is newer) and needs cert-manager + ingress; Headlamp needs neither. No ingress — reach it via `kubectl -n headlamp port-forward svc/headlamp 8080:80`, then log in with `kubectl -n headlamp create token headlamp-admin`.
+- **Not managed here:** the ARC install itself (CRDs, controller, runner scale sets) is applied into the cluster separately (helm/kubectl) — another workstream owns it. This repo owns the k3s substrate + cluster tooling (Headlamp).
+- Only up while this workstation is powered on (single-node, on the desktop). API reachable at `https://127.0.0.1:6443`.
 
 ### Shell
 
