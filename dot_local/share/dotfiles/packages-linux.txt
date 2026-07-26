@@ -30,6 +30,7 @@ ghostty
 github-cli
 gitkraken
 gnome-keyring
+google-chrome
 helm
 k3s-bin
 kleopatra
