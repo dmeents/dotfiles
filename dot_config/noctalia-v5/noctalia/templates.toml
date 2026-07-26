@@ -31,3 +31,11 @@ community_ids = [ "zed", "steam", "zen-browser", "discord", "hyprtoolkit" ]
 input_path  = "~/.config/noctalia-v5/noctalia/templates/beeper.css"
 output_path = "~/.config/BeeperTexts/custom.css"
 post_hook   = "notify-send -a Noctalia 'Beeper theme updated' 'Run \"Reload custom CSS\" (Ctrl/Cmd-K) in Beeper to apply'"
+
+# Custom user template: recolor Logseq. DB (sqlite) graphs ignore on-disk
+# custom.css and global config.edn :custom-css-url, so this renders a PASTE
+# SOURCE .css; paste it into Logseq -> Settings -> Edit custom.css.
+[theme.templates.user.logseq]
+input_path  = "~/.config/noctalia-v5/noctalia/templates/logseq.css"
+output_path = "~/.logseq/config/noctalia-logseq.css"
+post_hook   = "notify-send -a Noctalia 'Logseq theme updated' 'Re-paste ~/.logseq/config/noctalia-logseq.css into Settings -> Edit custom.css'"
