@@ -105,8 +105,8 @@ fi
 # Lightweight web dashboard (CNCF / kubernetes-sigs), installed via helm. Chosen
 # over Rancher because Rancher caps at k8s 1.35 (this cluster is newer) and would
 # drag in cert-manager + an ingress controller; Headlamp needs none of that.
-# No ingress: reach it via `kubectl port-forward` and log in with a short-lived
-# service-account token. Runs as this user (no sudo); KUBECONFIG is pinned to the
+# No ingress: reach it via `kubectl port-forward` and log in with a non-expiring
+# service-account token (the Secret below). Runs as this user (no sudo); KUBECONFIG is pinned to the
 # k3s file so it always targets THIS cluster regardless of ~/.kube/config.
 if command -v helm >/dev/null 2>&1; then
     export KUBECONFIG="$KUBECONFIG_SRC"
@@ -135,11 +135,24 @@ subjects:
   - kind: ServiceAccount
     name: headlamp-admin
     namespace: headlamp
+---
+# Non-expiring login token. `kubectl create token` mints short-lived (~1h,
+# cluster-capped lower) tokens via the TokenRequest API, which meant re-minting
+# every ~30min. A Secret of this type makes the token controller populate a
+# JWT that stays valid as long as this Secret + its ServiceAccount exist.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: headlamp-admin-token
+  namespace: headlamp
+  annotations:
+    kubernetes.io/service-account.name: headlamp-admin
+type: kubernetes.io/service-account-token
 YAML
         echo "==> Headlamp ready. Reach the dashboard with:"
         echo "      kubectl -n headlamp port-forward svc/headlamp 8080:80"
-        echo "    then open http://localhost:8080 and paste a token from:"
-        echo "      kubectl -n headlamp create token headlamp-admin"
+        echo "    then open http://localhost:8080 and paste the non-expiring token from:"
+        echo "      kubectl -n headlamp get secret headlamp-admin-token -o jsonpath='{.data.token}' | base64 -d"
     else
         echo "==> Headlamp helm install failed; check: helm -n headlamp status headlamp" >&2
     fi
