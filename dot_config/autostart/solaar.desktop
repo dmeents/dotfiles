@@ -1,0 +1,18 @@
+[Desktop Entry]
+# Autostart Solaar (Logitech device manager) at session login.
+# The spin runs under UWSM, which processes XDG autostart
+# (wayland-session-xdg-autostart@hyprland.desktop.target), so this is the
+# documented autostart path rather than hypr/config/autostart.lua.
+# `--window=hide` starts it minimized to the tray (matches Solaar's own
+# built-in "start at login" behaviour) so no window pops up on login.
+Name=Solaar
+Comment=Logitech Unifying Receiver peripherals manager
+Exec=solaar --window=hide
+Icon=solaar
+StartupNotify=true
+Terminal=false
+Type=Application
+Keywords=logitech;unifying;receiver;mouse;keyboard;
+Categories=Utility;GTK;
+X-GNOME-UsesNotifications=true
+X-GNOME-Autostart-enabled=true
