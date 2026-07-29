@@ -14,6 +14,7 @@ age
 ansible
 ansible-lint
 beeper-v4-bin
+breeze
 cachyos-gaming-meta
 chezmoi
 chromium
