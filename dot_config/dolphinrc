@@ -1,9 +1,53 @@
+# Key names, types and defaults are authoritative from the KConfigXT schemas in
+# /usr/share/config.kcfg/dolphin_*.kcfg -- only keys whose value differs from the
+# schema default are set here, so this file stays a readable list of deliberate choices.
+
+[ContextMenu]
+# "Copy To"/"Move To" submenus -- off by default, genuinely useful.
+ShowCopyMoveMenu=true
+
 [DetailsMode]
-PreviewSize=22
+# Set from the Dolphin GUI (zoom slider / view settings), then folded back here.
+# Schema default is KIconLoader::SizeLarge (48), so this is still a real deviation.
+PreviewSize=16
 
 [General]
 AlwaysShowTabBar=true
-GlobalViewProps=false
+# Auto-expand a folder when hovering over it mid-drag.
+AutoExpandFolders=true
+# Enter zip/tar archives as if they were folders.
+BrowseThroughArchives=true
+# Tabs are disposable here (RememberOpenedTabs=false), so the "really close N
+# tabs?" dialog on every window close is pure friction.
+ConfirmClosingMultipleTabs=false
+# NOT a deviation from the schema default -- GlobalViewProps defaults to true as of
+# 26.04. It is pinned explicitly because Dolphin's own settings UI will write false
+# here, which is what made view mode drift before. TRUE means one view config for
+# every folder, taken from the tracked view_properties/global/.directory, instead of
+# Dolphin silently remembering per-folder settings.
+GlobalViewProps=true
+# When another app opens a folder (xdg-open, a browser's "show in folder"), reuse
+# this window as a new tab instead of spawning a whole new window.
+OpenExternallyCalledFolderInNewTab=true
+# Do not restore last session's tabs. Fixes ~/.config/session/dolphin_dolphin_dolphin
+# resurrecting a dead `filenamesearch:` tab on every launch.
+RememberOpenedTabs=false
+ShowFullPath=true
+# Same reasoning as ShowFullPath, for the window title -- makes Hyprland window
+# titles and the window switcher distinguishable with several Dolphins open.
+ShowFullPathInTitlebar=true
+# The +/- hover markers on every item -- visual noise.
+ShowSelectionToggle=false
+# Enum: Small|FullWidth|Disabled. FullWidth shows free space and selection info.
+ShowStatusBar=FullWidth
+# Hover tooltip with full metadata. Compensates for DetailsMode PreviewSize=16
+# being far too small to read anything off the preview itself.
+ShowToolTips=true
+ShowZoomSlider=true
+# Tab switches panes in split view (F3).
+UseTabForSwitchingSplitView=true
+# SortingChoice is deliberately left at its NaturalSorting default -- it is
+# numeric-aware ("file2" before "file10"), which CaseInsensitiveSorting is not.
 Version=202
 ViewPropsTimestamp=2026,6,29,23,20,0.523
 
@@ -14,8 +58,34 @@ Places Icons Static Size=22
 [MainWindow]
 MenuBar=Disabled
 
+[Notification Messages]
+# Suppress the "this will change the file type" nag, which fires on every ordinary
+# dev rename (.ts -> .tsx, .js -> .mjs).
+ConfirmRenameFileType=false
+
+# Unlike every other group here, this is a full enumeration rather than a set of
+# deltas: Dolphin treats it as the allowlist of *enabled* thumbnailers, so any newly
+# installed thumbnailer plugin stays silently off until its name is added below.
+# Compare against `ls /usr/lib/qt6/plugins/kf6/thumbcreator/` after installing one.
+# Deliberately absent: textthumbnail -- a source-file thumbnail is illegible at
+# DetailsMode PreviewSize=16. Revisit if that size ever grows.
 [PreviewSettings]
 Plugins=ffmpegthumbnailer,appimagethumbnail,audiothumbnail,glycin-heif,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,directorythumbnail,imagethumbnail,glycin-image-rs,jpegthumbnail,glycin-jxl,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,opendocumentthumbnail,glycin-svg,svgthumbnail,gsf-office
 
+[Search]
+# Everywhere is an indexed baloo lookup, not a filesystem walk — only correct because
+# run_onchange_after_setup-baloo.sh enables the indexer. FileContents here (the old
+# value) meant "walk $HOME and grep every byte" and was why search was unusably slow.
+Location=Everywhere
+What=FileName
+
 [UiSettings]
 ColorScheme=Noctalia
+
+[VersionControl]
+# Git status emblems on icons, the Details_version column (see view_properties/
+# global/.directory), and git actions in the context menu. Requires the
+# dolphin-plugins package -- inert without it, since the plugin it names lives in
+# /usr/lib/qt6/plugins/dolphin/vcs/. Costs a `git status` per directory entered,
+# which is noticeable in very large repos.
+enabledPlugins=Git

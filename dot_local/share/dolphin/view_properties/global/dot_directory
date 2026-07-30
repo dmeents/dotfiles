@@ -1,3 +1,30 @@
+# Global view properties. With GlobalViewProps=true in dolphinrc this file is
+# authoritative for EVERY folder -- Dolphin no longer remembers per-folder views.
+#
+# Keys/defaults come from /usr/share/config.kcfg/dolphin_directoryviewpropertysettings.kcfg,
+# and only non-default values are set. One deliberate deviation from that schema:
+# it declares HiddenFilesShown under a [Settings] group, but Dolphin itself writes and
+# reads it under [Dolphin]. The observed behavior wins -- do not "fix" it to [Settings].
+#
+# Hazard: Dolphin has been observed DELETING this file outright while its view settings
+# were edited in the GUI, leaving view_properties/global/ empty. Because dolphinrc keeps
+# GlobalViewProps=true, an absent file does not mean "no global view props" -- it means
+# every folder silently falls back to schema defaults (Icons view, no VisibleRoles).
+# If Details view ever reverts to Icons for no apparent reason, check that this file
+# still exists before changing anything, then `chezmoi apply` to restore it.
 [Dolphin]
 HiddenFilesShown=true
+# 0=Icons, 1=Compact, 2=Details. Details is the most information-dense mode and the
+# only one with sortable columns plus expandable folder trees.
+ViewMode=2
+# Keep dotfiles grouped at the bottom instead of interleaved with real content.
+SortHiddenLast=true
+# Details-view columns. Unset means Name/Size/Date only; this is the one place to
+# widen them, since GlobalViewProps=true makes this file authoritative everywhere.
+# Format is <ViewMode>_<role>; the role vocabulary (text, size, modificationtime,
+# creationtime, accesstime, deletiontime, type, extension, permissions, owner,
+# group, path, version) is confirmed in libdolphinprivate.so, not in the kcfg.
+# Details_version is the VCS status column and stays empty until the
+# dolphin-plugins package is installed and [VersionControl] enabledPlugins=Git set.
+VisibleRoles=Details_text,Details_size,Details_modificationtime,Details_type,Details_version
 Version=4

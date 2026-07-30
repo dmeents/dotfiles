@@ -23,6 +23,10 @@ cups
 dart-sass
 dbeaver
 discord
+# Dolphin's VCS integration -- git status emblems, a sortable Version column in
+# Details view, and git actions in the context menu. Enabled via [VersionControl]
+# enabledPlugins=Git in dot_config/dolphinrc; without this package that key is inert.
+dolphin-plugins
 docker-desktop
 file-roller
 firefox
@@ -31,7 +35,10 @@ ghostty
 github-cli
 gitkraken
 gnome-keyring
-google-chrome
+# google-chrome (AUR) removed: it was the only manifest entry that never installed, and
+# because the installer exits 1 on any failure it aborted every `chezmoi apply` before the
+# later run_onchange_ scripts (baloo, k3s, Steam theme) could run. chromium above covers
+# the Chrome-engine case.
 helm
 k3s-bin
 kleopatra
@@ -43,6 +50,7 @@ mold
 noto-color-emoji-fontconfig
 opendesktop-fonts
 otf-monaspace-nerd
+plexamp-appimage
 pnpm
 proton-mail-bin
 proton-vpn-gtk-app
