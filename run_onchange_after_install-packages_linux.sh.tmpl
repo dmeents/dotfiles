@@ -10,9 +10,11 @@
 # the space-separated set of currently-absent manifest packages; when it changes
 # (a package appears missing, or a retry succeeds), the script re-runs.
 # missing packages: {{ output "bash" "-c" (printf `for p in $(grep -vE '^[[:space:]]*(#|$)' '%s/dot_local/share/dotfiles/packages-linux.txt'); do command -v pacman >/dev/null 2>&1 && { pacman -Qq -- "$p" >/dev/null 2>&1 || printf '%%s ' "$p"; }; done; true` .chezmoi.sourceDir) | trim }}
-# `shelly install` handles ONLY repo packages/files/URLs — AUR names must go
-# through `shelly aur install`. We classify each manifest entry at runtime and
-# route accordingly, so one AUR name can't abort the whole ALPM transaction.
+# shelly 3.x uses typed install subcommands: `shelly install standard` handles
+# ONLY repo packages/files/URLs — AUR names must go through `shelly install aur`.
+# (The old flat `shelly install`/`shelly aur install` forms were removed in 3.0.)
+# We classify each manifest entry at runtime and route accordingly, so one AUR
+# name can't abort the whole ALPM transaction.
 # No `set -e`: we attempt every package and report failures at the end.
 set -uo pipefail
 
@@ -31,7 +33,7 @@ echo "==> Enabling AUR support in shelly"
 shelly config set AurEnabled true
 
 echo "==> Syncing system (shelly upgrade)"
-shelly upgrade -n || echo "warning: 'shelly upgrade' returned non-zero; continuing"
+shelly upgrade all -n || echo "warning: 'shelly upgrade all' returned non-zero; continuing"
 
 # Read manifest, ignoring comments and blank lines.
 mapfile -t want < <(grep -vE '^[[:space:]]*(#|$)' "$MANIFEST")
@@ -61,14 +63,14 @@ failed=()
 
 # Repo packages: one ALPM transaction, falling back to per-package on failure.
 if ((${#repo[@]})); then
-    echo "==> Installing ${#repo[@]} repo package(s) via 'shelly install'..."
-    if ! shelly install -n "${repo[@]}"; then
+    echo "==> Installing ${#repo[@]} repo package(s) via 'shelly install standard'..."
+    if ! shelly install standard -n "${repo[@]}"; then
         echo "==> Repo batch failed; retrying per-package to isolate offenders..." >&2
         for p in "${repo[@]}"; do
-            shelly install -n "$p" && continue
+            shelly install standard -n "$p" && continue
             # A package already installed from the AUR also matches `shelly query`
             # and lands here on a re-run — try the AUR path before giving up.
-            shelly aur install -n "$p" || failed+=("$p")
+            shelly install aur -n "$p" || failed+=("$p")
         done
     fi
 fi
@@ -81,13 +83,13 @@ if ((${#aur[@]})) && command -v rustup >/dev/null 2>&1; then
     rustup default stable >/dev/null 2>&1 || true
 fi
 
-# AUR packages: must use `shelly aur install`; per-package fallback on failure.
+# AUR packages: must use `shelly install aur`; per-package fallback on failure.
 if ((${#aur[@]})); then
-    echo "==> Installing ${#aur[@]} AUR package(s) via 'shelly aur install'..."
-    if ! shelly aur install -n "${aur[@]}"; then
+    echo "==> Installing ${#aur[@]} AUR package(s) via 'shelly install aur'..."
+    if ! shelly install aur -n "${aur[@]}"; then
         echo "==> AUR batch failed; retrying per-package to isolate offenders..." >&2
         for p in "${aur[@]}"; do
-            shelly aur install -n "$p" || failed+=("$p")
+            shelly install aur -n "$p" || failed+=("$p")
         done
     fi
 fi

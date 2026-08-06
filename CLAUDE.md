@@ -35,7 +35,7 @@ Before codifying anything system-level, verify the *actual* current state (`syst
 `shelly` is the Noctalia spin's unified package manager (repo + AUR + Flatpak). **Never use pacman or paru to install** on this branch.
 
 - Manifest: `dot_local/share/dotfiles/packages-linux.txt` — one package per line, `#` comments and blanks ignored. Contains only additions on top of the spin.
-- Installer: `run_onchange_after_install-packages_linux.sh.tmpl`. It embeds the manifest's sha256, so editing the manifest re-triggers the script on the next `chezmoi apply`. It runs `shelly install -n <all manifest packages>` (idempotent — already-installed packages are skipped) and fails loudly if shelly errors.
+- Installer: `run_onchange_after_install-packages_linux.sh.tmpl`. It embeds the manifest's sha256, so editing the manifest re-triggers the script on the next `chezmoi apply`. It classifies each manifest entry and installs repo packages via `shelly install standard -n <pkgs>` and AUR names via `shelly install aur -n <pkgs>` (idempotent — already-installed packages are skipped) and fails loudly if shelly errors. Note: shelly 3.x uses typed install subcommands (`shelly install standard|aur|flatpak|appimage`); the old flat `shelly install <pkgs>` / `shelly aur install` forms were removed in 3.0.
 - Because installs need privilege escalation, run `chezmoi apply` in an interactive shell so shelly can prompt for sudo.
 
 To find explicitly-installed packages not yet in the manifest:
@@ -47,13 +47,13 @@ comm -23 <(pacman -Qeq | sort) <(grep -vE '^\s*(#|$)' dot_local/share/dotfiles/p
 ## Essential Commands
 
 ```bash
-chezmoi apply              # Sync source files to home directory (runs shelly install if manifest changed)
+chezmoi apply              # Sync source files to home directory (runs the shelly installer if manifest changed)
 chezmoi diff               # Preview what would change
 chezmoi edit <file>        # Edit the source version of a managed file
 chezmoi source-path <file> # Find source location of a managed file
 chezmoi status             # Show files that differ from source
 chezmoi git -- <command>   # Run git in the chezmoi source directory
-shelly upgrade             # Full system upgrade
+shelly upgrade all         # Full system upgrade (all backends; shelly 3.x requires the subcommand)
 hyprctl reload             # Reload Hyprland after config changes
 ```
 
