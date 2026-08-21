@@ -29,6 +29,22 @@ if ! command -v shelly >/dev/null 2>&1; then
     exit 1
 fi
 
+# Preflight: confirm this shelly still speaks the typed-subcommand grammar used
+# below. Without this, a CLI change makes every manifest entry fail with its own
+# error pair — ~60 lines of noise for one root cause. Fail once, clearly.
+# We grep the Commands listing rather than probing exit codes: shelly returns 0
+# for `shelly <anything> --help`, including bogus verbs and bogus types, so an
+# exit-status check silently passes and guards nothing.
+for pair in "install standard" "install aur" "upgrade all"; do
+    verb=${pair%% *}; kind=${pair##* }
+    if ! shelly "$verb" --help 2>/dev/null | grep -qE "^ *shelly $verb $kind\b"; then
+        echo "==> shelly does not list 'shelly $verb $kind' — its CLI grammar has changed." >&2
+        echo "==> Installed: $(shelly --version 2>/dev/null | head -1). Check 'shelly $verb --help'" >&2
+        echo "==> and update the call sites in this script before re-applying." >&2
+        exit 1
+    fi
+done
+
 echo "==> Enabling AUR support in shelly"
 shelly config set AurEnabled true
 
