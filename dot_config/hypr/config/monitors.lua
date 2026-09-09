@@ -1,0 +1,40 @@
+-- Montior wiki https://wiki.hypr.land/Configuring/Basics/Monitors/
+
+-- Dell U5226KW over DisplayPort (native: 6144x2560@120, needs DP 2.1 + DSC).
+-- Kept so the full-resolution setup comes back automatically on replug.
+hl.monitor({
+    output    = "DP-1",
+    mode      = "6144x2560@120",
+    position  = "auto",
+    scale     = "auto",
+})
+
+-- Same panel on HDMI-A-1, routed through the Sony soundbar for audio.
+-- Once the bar is configured to claim the audio stream it also becomes the
+-- EDID source (manufacturer ID flips to SNY, CEC source address 2.1.0.0 on
+-- the bar's HDMI input 1) and drops every 6144x2560 timing: max TMDS clock
+-- 300MHz, no FRL.
+--
+-- This path carries AUDIO ONLY -- video comes from DP-1 above. So pin the
+-- cheapest sane timing, not the highest. 3840x2160@60 is technically legal
+-- here but only via YCbCr 4:2:0 (VIC 97), which needs ~297MHz of the 300MHz
+-- ceiling. HDMI audio is embedded in the video blanking intervals, and at
+-- that margin the bar locked video but produced NO SOUND. 1920x1080@60 is
+-- VIC 16 at 148.5MHz -- half the ceiling -- and audio works.
+-- Pinned because the bar's EDID marks 640x480 as "preferred". Do NOT pin a
+-- 30Hz refresh here -- Hyprland fuzzy-matches refresh first and will park
+-- you on 3840x2160@30.
+-- Full 6144x2560@120 requires DP straight to the panel (see DP-1 above).
+hl.monitor({
+    output    = "HDMI-A-1",
+    mode      = "1920x1080@60",
+    position  = "auto",
+    scale     = 1,
+})
+
+hl.monitor({
+    output    = "",
+    mode      = "preferred",
+    position  = "auto",
+    scale     = "auto",
+})

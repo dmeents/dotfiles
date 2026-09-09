@@ -65,6 +65,12 @@ sassc
 socat
 solaar
 sops
+# spotify-launcher (repo), not the AUR 'spotify': the AUR PKGBUILD verifies its source
+# against Spotify's GPG key, which a non-interactive `shelly install aur -n` cannot import.
+# The launcher is in cachyos-extra, so it routes through `shelly install standard` and
+# self-updates the official client thereafter. See the google-chrome note above for why a
+# single unattended-install failure is worth avoiding here.
+spotify-launcher
 starship
 steam
 ttf-jetbrains-mono
