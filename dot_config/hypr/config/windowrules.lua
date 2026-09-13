@@ -160,3 +160,24 @@ hl.window_rule({
         title = "negative:^(Moving.*|Create New.*|Extract.*|Compress.*|Copying.*|Progress.*|Configure.*|Properties.*|Choose\\sApplication.*)$",
     },
 })
+
+-- Age of Empires IV → join the tiling layout instead of floating.
+-- Two independent things float it. The Gaming rule above matches on
+-- `initial_title = "^$"` (AoE4 maps with an empty title and only then renames
+-- itself to "Age of Empires IV ") and sets `float = true`; separately, the
+-- XWayland surface declares WM_NORMAL_HINTS min == max == 3840x2160, which
+-- Hyprland reads as "not resizable" and force-floats regardless of any rule.
+-- That second one is why SUPER+ALT+Space looks dead here: the float dispatcher
+-- returns `ok` and the floating state never changes, while `center` on the same
+-- window moves it — position is allowed, resize is not. So `tile` alone cannot
+-- win; `no_max_size` (Hyprland's `nomaxsize`) drops the max-size hint so the
+-- window can be resized into a tile at all. Same later-rule-wins ordering as
+-- the Dolphin rule above.
+-- The game must ALSO be set to Windowed in its own video settings — with a
+-- fixed-size surface it keeps rendering 3840x2160 whatever size it is given.
+hl.window_rule({
+    name        = "aoe4-tile",
+    tile        = true,
+    no_max_size = true,
+    match       = { class = "^(steam_app_1466860)$" },
+})
