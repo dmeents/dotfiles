@@ -25,13 +25,19 @@ cursor-style-blink = false
 mouse-hide-while-typing = true
 
 # --- Tabs & window ----------------------------------------------------------
-# Tabs are built in — no multiplexer needed:
+# Tabs are built in — fine for throwaway shells (they don't persist, see below):
 #   New tab            Ctrl+Shift+T
 #   Next / Prev tab    Ctrl+Tab / Ctrl+Shift+Tab
 #   Go to tab N        Alt+1 .. Alt+9
 #   Split right/down   Ctrl+Shift+O / Ctrl+Shift+E
 gtk-tabs-location = top
 window-theme = ghostty
+
+# No session restore here: `window-save-state` is macOS-only and has no effect
+# on the GTK runtime, and the D-Bus interface exposes only new-window (no
+# new-tab), so a layout can't be scripted back in either. For tabs that survive
+# closing the window, use Super+Shift+Return — it launches Ghostty attached to
+# the persistent Zellij session, which owns the tabs instead.
 
 # --- Behavior ---------------------------------------------------------------
 confirm-close-surface = false

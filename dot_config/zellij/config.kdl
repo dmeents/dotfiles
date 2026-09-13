@@ -1,4 +1,8 @@
-// Zellij configuration — the multi-workflow layer on top of WezTerm.
+// Zellij configuration — the multi-workflow layer on top of Ghostty.
+// Ghostty has no session restore on Linux (window-save-state is macOS-only),
+// so Zellij owns tabs/splits: its client/server split means closing the Ghostty
+// window only kills the client, and the session keeps running detached.
+// Launch with Super+Shift+Return (hypr/config/defaults.lua: TERMINAL_SESSION).
 // Nord theme to match the terminal palette; Wayland clipboard via wl-copy.
 
 theme "nord"
@@ -8,7 +12,10 @@ copy_command "wl-copy"
 copy_clipboard "system"
 copy_on_select true
 
-// Persist sessions across restarts so workflows survive reboots.
+// Persist sessions across reboots. After a reboot `zellij ls` lists the session
+// as EXITED; `zellij attach main` resurrects the layout and pane scrollback.
+// Resurrected command panes wait on an Enter press instead of re-running — add
+// `--force-run-commands` to the attach if you want them to start on their own.
 session_serialization true
 pane_viewport_serialization true
 
@@ -28,4 +35,5 @@ ui {
 }
 
 // No keybind overrides: Zellij's defaults (Ctrl+p/t/n/s/o/h) don't collide with
-// WezTerm's Ctrl+a leader, and Ctrl+g already toggles Zellij's locked mode.
+// Ghostty's Ctrl+Shift+* bindings, and Ctrl+g toggles Zellij's locked mode.
+// Use Zellij's tabs (Ctrl+t n) rather than Ghostty's — only these persist.
