@@ -32,6 +32,24 @@ hl.monitor({
     scale     = 1,
 })
 
+-- Built-in laptop panel (BOE 0x0BCA, 2256x1504 @ 13.5", 3:2) -- display-
+-- specific, so it's gated to the laptop via the machine_type prompt. On a
+-- desktop the block is omitted and the catch-all below applies.
+--
+-- Pinned because the catch-all's scale="auto" resolves to 2 on this panel,
+-- which leaves only 1128x752 of logical space and makes the GUI huge.
+-- Hyprland rejects any scale that doesn't divide BOTH dimensions to whole
+-- pixels, so the usual 1.5 is invalid here (1504/1.5 = 1002.67). Nearest
+-- valid neighbours are 1.333333 (-> 1692x1128) and 1.6 (-> 1410x940).
+{{- if eq .machine_type "laptop" }}
+hl.monitor({
+    output    = "eDP-1",
+    mode      = "2256x1504@60",
+    position  = "auto",
+    scale     = 1.333333,
+})
+{{- end }}
+
 hl.monitor({
     output    = "",
     mode      = "preferred",
