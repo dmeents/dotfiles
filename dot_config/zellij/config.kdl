@@ -17,11 +17,11 @@ copy_on_select true
 // Resurrected command panes wait on an Enter press instead of re-running — add
 // `--force-run-commands` to the attach if you want them to start on their own.
 session_serialization true
-pane_viewport_serialization true
+serialize_pane_viewport true
 
 // UI
 pane_frames true
-default_layout "compact"
+default_layout "default"  // tab-bar on top, status-bar (mode hints) on the bottom
 mouse_mode true
 scroll_buffer_size 10000
 show_startup_tips false
