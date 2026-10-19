@@ -45,8 +45,13 @@ for pair in "install standard" "install aur" "upgrade all"; do
     fi
 done
 
-echo "==> Enabling AUR support in shelly"
-shelly config set AurEnabled true
+# shelly <= 3.0 gated the AUR behind an AurEnabled flag; 3.1 removed the key
+# (AUR is always available, only AurUrl remains) and `config set` on an unknown
+# key prints an error. Set it only where the key still exists.
+if shelly config list 2>/dev/null | grep -q '^AurEnabled'; then
+    echo "==> Enabling AUR support in shelly"
+    shelly config set AurEnabled true
+fi
 
 echo "==> Syncing system (shelly upgrade)"
 shelly upgrade all -n || echo "warning: 'shelly upgrade all' returned non-zero; continuing"
