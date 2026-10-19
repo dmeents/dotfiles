@@ -11,6 +11,9 @@ adobe-source-han-sans-cn-fonts
 adobe-source-han-sans-jp-fonts
 adobe-source-han-sans-kr-fonts
 age
+# AI plan usage CLI (Claude/Copilot quotas) read by the Noctalia
+# felipeartur/ai-usagebar bar plugin; config in dot_config/ai-usagebar/.
+ai-usagebar-bin
 ansible
 ansible-lint
 beeper-v4-bin

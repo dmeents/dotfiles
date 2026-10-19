@@ -30,9 +30,13 @@ setup_wizard_enabled = false
 [bar.default]
 position = "top"
 auto_hide = false
+# Bar contents (GUI tweaks, folded back from state settings.toml). Instance ids
+# "bar", "widget" and "widget_2" are the names the v5 GUI generated when the
+# plugin widgets were added; they are kept verbatim so this file and the
+# laptop's live settings.toml refer to the same instances. See [widget.*] below.
 start = [ "workspaces", "group:g1" ]
 center = [ "clock" ]
-end = [ "media", "tray", "group:g2" ]
+end = [ "bar", "media", "tray", "widget", "group:g2" ]
 capsule = true
 font_family = "JetBrainsMono Nerd Font"
 # Styling tuned in the v5 GUI, folded back from state settings.toml.
@@ -45,19 +49,19 @@ margin_edge = 0
 margin_ends = 0
 
 # Capsule groups (GUI tweak): pill-grouped widget clusters referenced as
-# "group:<id>" in the start/end lists above. g1 = system monitors, g2 =
-# notifications/control-center/battery. NOTE: the array-of-tables must stay
+# "group:<id>" in the start/end lists above. g1 = process list + system
+# monitors, g2 = notifications/battery/control-center. NOTE: the array-of-tables must stay
 # below all bare [bar.default] keys (TOML requires it).
 [[bar.default.capsule_group]]
 id = "g1"
-members = [ "cpu", "ram", "temp" ]
+members = [ "widget_2", "cpu", "disk", "ram", "temp" ]
 fill = "surface_variant"
 opacity = 1.0
 padding = 6.0
 
 [[bar.default.capsule_group]]
 id = "g2"
-members = [ "notifications", "control-center", "battery" ]
+members = [ "notifications", "battery", "control-center" ]
 fill = "surface_variant"
 opacity = 1.0
 padding = 6.0
@@ -74,9 +78,33 @@ session_search = true
 [control_center]
 width = 900
 
+# --- Community plugins (GUI tweak, folded back from state settings.toml) ---
+# On a fresh machine Noctalia clones the default official/community plugin
+# sources at startup and materializes every id listed here, so nothing has to
+# be installed from the GUI. Disabling one in the GUI writes an override to
+# settings.toml that wins over this list until removed there.
+[plugins]
+enabled = [ "tordex/processes", "yuuto/arch-updater", "felipeartur/ai-usagebar" ]
+
 # Tray uses a drawer (GUI tweak).
 [widget.tray]
 drawer = true
+
+# Plugin widget instances referenced from [bar.default] above.
+# Process list, inside capsule group g1.
+[widget.widget_2]
+type = "tordex/processes:widget"
+
+# Pending Arch/AUR updates, at the end of the bar.
+[widget.widget]
+type = "yuuto/arch-updater:widget"
+
+# AI plan usage capsule, pinned to Claude. Reads `ai-usagebar usage --json`;
+# the ai-usagebar-bin package comes from the package manifest and its own
+# provider config lives in ~/.config/ai-usagebar/config.toml (also managed).
+[widget.bar]
+type = "felipeartur/ai-usagebar:bar"
+vendor = "anthropic"
 
 # Clock widget format (GUI tweak, folded back from state settings.toml): combined
 # 12-hour time + full weekday/month/day/year on one line, e.g.

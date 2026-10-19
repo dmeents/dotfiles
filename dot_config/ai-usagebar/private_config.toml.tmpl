@@ -1,0 +1,22 @@
+# ai-usagebar configuration — managed by chezmoi.
+# Read by the Noctalia "AI Usage" plugin (felipeartur/ai-usagebar) via
+# `ai-usagebar usage --json`. Credentials are never stored here: Claude is read
+# from the Claude Code login file, Copilot from `gh auth token`.
+
+[ui]
+primary = "anthropic"
+
+[anthropic]
+enabled = true
+{{- if stat (joinPath .chezmoi.homeDir ".claude-max" ".credentials.json") }}
+# This machine keeps the Claude Max OAuth login in CLAUDE_CONFIG_DIR=~/.claude-max
+# (the `claude-max` wrapper); the default ~/.claude/.credentials.json holds the
+# Console API key login, which has no plan quota to report.
+credentials_path = "~/.claude-max/.credentials.json"
+{{- else }}
+# No ~/.claude-max login on this machine: use the default ~/.claude/.credentials.json.
+{{- end }}
+
+[copilot]
+# Sign in once with `gh auth login --web`; the token is fetched at refresh time.
+enabled = true
