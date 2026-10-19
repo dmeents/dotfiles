@@ -53,6 +53,17 @@ if shelly config list 2>/dev/null | grep -q '^AurEnabled'; then
     shelly config set AurEnabled true
 fi
 
+# Authenticate once up front. shelly runs itself under sudo for every call, so a
+# wrong or blank password on the batch used to cascade into the per-package
+# fallback below: one sudo prompt per manifest entry (~80), which Ctrl+C cannot
+# stop and which trips pam_faillock (3 failures -> 10 min lockout). With the
+# credential cached here, the batches below never prompt; if it fails, bail.
+echo "==> Authenticating sudo for shelly"
+if ! sudo -v; then
+    echo "==> sudo authentication failed (wrong password or pam_faillock lockout); not installing anything" >&2
+    exit 1
+fi
+
 echo "==> Syncing system (shelly upgrade)"
 shelly upgrade all -n || echo "warning: 'shelly upgrade all' returned non-zero; continuing"
 
@@ -73,12 +84,20 @@ fi
 # INSTALLER on this branch. The dbs were just refreshed by `shelly upgrade` above.
 repo=(); aur=()
 for p in "${want[@]}"; do
+    # Already installed (repo or AUR): skip. This keeps the batches to genuinely
+    # missing packages, so a batch failure retries a handful, not the manifest.
+    pacman -Qq -- "$p" >/dev/null 2>&1 && continue
     if pacman -Si -- "$p" >/dev/null 2>&1; then
         repo+=("$p")
     else
         aur+=("$p")
     fi
 done
+
+if ((${#repo[@]} == 0 && ${#aur[@]} == 0)); then
+    echo "==> every manifest package is already installed"
+    exit 0
+fi
 
 failed=()
 
