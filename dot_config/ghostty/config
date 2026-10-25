@@ -24,20 +24,21 @@ cursor-style = block
 cursor-style-blink = false
 mouse-hide-while-typing = true
 
+# --- Session ----------------------------------------------------------------
+# Every Ghostty window attaches to the persistent Zellij session "main", so
+# tabs, splits and scrollback survive closing the window and rebooting. Ghostty
+# can't do this itself: `window-save-state` is macOS-only and has no effect on
+# the GTK runtime. Applies however Ghostty is launched (app launcher, D-Bus,
+# Super+Return). `ghostty -e <cmd>` overrides it for that window, which is how
+# Super+Shift+Return gets a plain shell. A second window is a second client on
+# the same session, not a separate shell — use Zellij tabs (Ctrl+t n) instead.
+command = zellij attach --create main
+
 # --- Tabs & window ----------------------------------------------------------
-# Tabs are built in — fine for throwaway shells (they don't persist, see below):
-#   New tab            Ctrl+Shift+T
-#   Next / Prev tab    Ctrl+Tab / Ctrl+Shift+Tab
-#   Go to tab N        Alt+1 .. Alt+9
-#   Split right/down   Ctrl+Shift+O / Ctrl+Shift+E
+# Ghostty's own tabs/splits (Ctrl+Shift+T / O / E) would also run the command
+# above, i.e. open another view of the same session. Use Zellij's instead.
 gtk-tabs-location = top
 window-theme = ghostty
-
-# No session restore here: `window-save-state` is macOS-only and has no effect
-# on the GTK runtime, and the D-Bus interface exposes only new-window (no
-# new-tab), so a layout can't be scripted back in either. For tabs that survive
-# closing the window, use Super+Shift+Return — it launches Ghostty attached to
-# the persistent Zellij session, which owns the tabs instead.
 
 # --- Behavior ---------------------------------------------------------------
 confirm-close-surface = false

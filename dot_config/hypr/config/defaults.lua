@@ -1,10 +1,10 @@
 -- Hyprland default apps
 
+-- Ghostty's config sets `command` to attach the persistent Zellij session, so
+-- TERMINAL already opens it. See ~/.config/ghostty/config.
 TERMINAL         = "ghostty"
--- Persistent-session terminal: Ghostty has no session restore on Linux
--- (window-save-state is macOS-only), so Zellij owns the tabs/splits and
--- survives closing the window and rebooting. See ~/.config/zellij/config.kdl.
-TERMINAL_SESSION = "ghostty -e zellij attach --create main"
+-- Escape hatch: `-e` overrides that command, giving a plain shell outside Zellij.
+TERMINAL_PLAIN   = "ghostty -e fish"
 FILE_MANAGER     = "dolphin"
 BROWSER          = "zen-browser"
 EDITOR           = "gnome-text-editor --new-window"

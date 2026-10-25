@@ -2,7 +2,7 @@
 // Ghostty has no session restore on Linux (window-save-state is macOS-only),
 // so Zellij owns tabs/splits: its client/server split means closing the Ghostty
 // window only kills the client, and the session keeps running detached.
-// Launch with Super+Shift+Return (hypr/config/defaults.lua: TERMINAL_SESSION).
+// Every Ghostty window attaches here (ghostty/config: `command`).
 // Nord theme to match the terminal palette; Wayland clipboard via wl-copy.
 
 theme "nord"
