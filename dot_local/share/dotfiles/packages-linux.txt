@@ -46,7 +46,6 @@ helm
 k3s-bin
 kleopatra
 konsole
-logseq-desktop
 meld
 millennium
 mold

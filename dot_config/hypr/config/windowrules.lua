@@ -10,7 +10,9 @@ hl.window_rule({
 })
 
 -- Gaming
-local gamingApps = "^(steam_app.*|gamescope)$"
+-- Personal change: was steam_app.*, narrowed to numeric ids. See the Battle.net note
+-- in the personal overrides below.
+local gamingApps = "^(steam_app_[0-9]+|gamescope)$"
 local gamingWorkspace = "name:gaming"
 
 hl.window_rule({ match = { content = "game" }, workspace = gamingWorkspace })
@@ -130,7 +132,9 @@ hl.window_rule({
 -- tiling, just one wide primary. `master.mfact` sets the main window's width
 -- fraction; the spin only configures dwindle, so setting master here is additive.
 -- Uses the v4 value mfact = 0.75 (main window = 75% of the workspace width).
-hl.config({ master = { new_status = "master", mfact = 0.75, special_scale_factor = 0.8 } })
+-- (master.special_scale_factor was dropped — deprecated in Hyprland 0.57, and it was
+-- a no-op here anyway: the special workspace uses dwindle, not master.)
+hl.config({ master = { new_status = "master", mfact = 0.75 } })
 hl.workspace_rule({ workspace = "2", layout = "master", layout_opts = { orientation = "right" } })
 
 -- Path of Exile 2 → workspace 2, fake-fullscreen.
@@ -181,3 +185,17 @@ hl.window_rule({
     no_max_size = true,
     match       = { class = "^(steam_app_1466860)$" },
 })
+
+-- Battle.net (Lutris → umu → GE-Proton) is NOT a game — hence the narrowed
+-- `gamingApps` in the Gaming section above. Battle.net isn't in umu's game database,
+-- so Lutris runs it as GAMEID=umu-default and Proton sets WM_CLASS steam_app_default.
+-- The spin's steam_app.* pattern read that as a Steam game: every launcher window and
+-- install dialog went to name:gaming, forced fullscreen at monitor size, tagged
+-- content=game (VRR flips under misc.vrr = 3). Title-based overrides can't fix it:
+-- install dialogs have arbitrary titles ("WoW: Forever Installation") while their child
+-- popups are titled "Battle.net", so dialog and popup landed on different workspaces and
+-- the popup ping-ponged between them. Real Steam games always have a numeric app id
+-- (PoE = steam_app_2694490), so matching steam_app_[0-9]+ keeps them and drops
+-- umu-default apps. Blizzard games launched from Battle.net share steam_app_default, so
+-- they now behave like normal windows; give them a title rule here if they need the
+-- Gaming treatment.
