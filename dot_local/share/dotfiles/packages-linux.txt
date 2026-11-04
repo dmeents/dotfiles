@@ -22,6 +22,8 @@ cachyos-gaming-meta
 chezmoi
 chromium
 claude-code
+# Official Claude desktop app (cachyos repo), alongside the claude-code CLI above.
+claude-desktop
 cups
 dart-sass
 dbeaver
